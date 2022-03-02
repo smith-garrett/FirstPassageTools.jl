@@ -1,5 +1,6 @@
 module FirstPassageTools
 
-# Write your package code here.
+import("utilities.jl")
+import("firstpassagedistributions.jl")
 
 end
