@@ -1,6 +1,6 @@
 module FirstPassageTools
 
-import("utilities.jl")
-import("firstpassagedistributions.jl")
+include("utilities.jl")
+include("firstpassagedistributions.jl")
 
 end

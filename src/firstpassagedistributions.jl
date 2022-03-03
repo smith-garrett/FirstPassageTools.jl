@@ -20,7 +20,7 @@ function splittingprobabilities(T::Matrix{Real}, A::Matrix{Real}, p0::Vector{Rea
 end
 
 # Creating new methods for getting a first passage time distributions
-struct fpdistribution{T1::Matrix{<:Real}, T2::Matrix{<:Real}, T3::Vector{<:Real}} <: ContinuousUnivariateDistribution
+struct fpdistribution{T1::Matrix{Real}, T2::Matrix{Real}, T3::Vector{Real}} <: ContinuousUnivariateDistribution
     T::T1  # transient matrix
     A::T2  # absorbing matrix
     p0::T3  # initial condition
