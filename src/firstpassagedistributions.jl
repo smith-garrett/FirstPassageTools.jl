@@ -6,19 +6,6 @@ using Distributions
 using Roots  # needed for numerically finding quantiles
 using ExponentialAction  # needed for differentiable expv()
 
-"""
-    splittingprobabilities(T, A, p0)
-
-Compute the splitting probabilities, i.e., the probabilities of being absorbed into each of
-the absorbing states.
-
-Currently not very useful, because only exit times (unconditional first-passage tmes) are
-implemented
-"""
-function splittingprobabilities(T::Matrix{Real}, A::Matrix{Real}, p0::Vector{Real})
-    return -A * inv(T) * p0
-end
-
 # Creating new methods for getting a first passage time distributions
 struct fpdistribution <: ContinuousUnivariateDistribution
     T::Matrix  # transient matrix
@@ -35,7 +22,7 @@ Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 
 # Probability density and cumulative density functions
 Distributions.pdf(d::fpdistribution, t::Float64) = begin
-    t >= 0 ? d.A * expv(t, d.T, d.p0) : zero(t)
+    t >= 0 ? sum(d.A * expv(t, d.T, d.p0)) : zero(t)
 end
 
 Distributions.logpdf(d::fpdistribution, t::Float64) = begin
@@ -60,4 +47,17 @@ end
 
 Distributions.rand(d::fpdistribution, rng::AbstractVector{<:Real}) = begin
     quantile(d, rng)
+end
+
+"""
+    splittingprobabilities(T, A, p0)
+
+Compute the splitting probabilities, i.e., the probabilities of being absorbed into each of
+the absorbing states.
+
+Currently not very useful, because only exit times (unconditional first-passage tmes) are
+implemented
+"""
+function splittingprobabilities(d::fpdistribution)
+    return -d.A * inv(d.T) * d.p0
 end
