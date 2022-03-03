@@ -20,10 +20,10 @@ function splittingprobabilities(T::Matrix{Real}, A::Matrix{Real}, p0::Vector{Rea
 end
 
 # Creating new methods for getting a first passage time distributions
-struct fpdistribution{T1::Matrix{Real}, T2::Matrix{Real}, T3::Vector{Real}} <: ContinuousUnivariateDistribution
-    T::T1  # transient matrix
-    A::T2  # absorbing matrix
-    p0::T3  # initial condition
+struct fpdistribution <: ContinuousUnivariateDistribution
+    T::Matrix  # transient matrix
+    A::Matrix  # absorbing matrix
+    p0::Vector  # initial condition
 end
 
 # Helper functions
@@ -49,7 +49,7 @@ end
 """
     quantile(d::fpdistribution, p)
 
-Return the `$p$`-th quantile for the first-passage time distribution `d`.
+Return the ``p``-th quantile for the first-passage time distribution `d`.
 
 The quantile function for these distributions has no closed-form solution, so this method
 uses the `find_zero` function from the `Roots` package to find the quantile numerically.
