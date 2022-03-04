@@ -93,16 +93,10 @@ end
 """
     rescale!(W::Matrix, τ)
 
-Rescale a matrix a matrix by a constant τ. Resets the diagonal of square matrices if
-necessary.
+Rescale a matrix a matrix by a constant τ.
 """
 function rescale!(W::Matrix{Float64}, τ)
-    if size(W, 1) == size(W, 2)
-        W *= τ
-        return setdiagonal!(W)
-    else
-        return W * τ
-    end
+    W *= τ
 end
 
 """
