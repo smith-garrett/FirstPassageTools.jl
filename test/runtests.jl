@@ -1,5 +1,14 @@
 using FirstPassageTools
 using Test
+using CSV
+using DataFrames
+
+@testset "Testing setup" begin
+    Ttest, Atest = setup("goodtest.csv")
+    @test isapprox(Ttest, [-3.0 0; 3 -3])
+    @test isapprox(Atest, [0 3.0])
+    @test_throws AssertionError setup("badtest.csv")
+end
 
 @testset "Tests of rescale!()" begin
     # Test with T and A matrices
