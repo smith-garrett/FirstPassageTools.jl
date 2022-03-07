@@ -11,6 +11,17 @@ struct fpdistribution <: ContinuousUnivariateDistribution
     T::Matrix  # transient matrix
     A::Matrix  # absorbing matrix
     p0::Vector  # initial condition
+
+    # Internal constructor function
+    fpdistribution(T, A, p0) = begin
+        # At least one column of T sum to be less than zero
+        @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect"
+        # Definition of A
+        @assert isapprox(transpose(-T * ones(size(T, 1))), A) "Absorbing matrix A incorrect"
+        # p0 should be a probability distribution
+        @assert isapprox(sum(p0), 1.0) "Initial condition p0 not a probability distribution"
+        new(T, A, p0)
+    end
 end
 
 # Helper functions

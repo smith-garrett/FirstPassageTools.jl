@@ -26,3 +26,19 @@ end
     Wtest = hcat(Wtest, zeros(size(Wtest, 1)))
     @test isapprox(3 * Wtest, rescale!(Wtest, 3))
 end
+
+@testset "Tests for building an fpdistribution" begin
+    # Should pass:
+    T = [-1 1.0; 1 -2]
+    A = [0 1.0]
+    p0 = [1.0, 0]
+    @test_nowarn fpdistribution(T, A, p0)
+    
+    # Should fail:
+    Tbad = [-1 1.0; 1 -1]
+    Abad = [0 1.1]
+    p0bad = [1.0, 0.1]
+    @test_throws AssertionError fpdistribution(Tbad, A, p0)
+    @test_throws AssertionError fpdistribution(T, Abad, p0)
+    @test_throws AssertionError fpdistribution(T, A, p0bad)
+end
