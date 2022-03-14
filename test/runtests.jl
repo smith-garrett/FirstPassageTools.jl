@@ -41,4 +41,5 @@ end
     @test_throws AssertionError fpdistribution(Tbad, A, p0)
     @test_throws AssertionError fpdistribution(T, Abad, p0)
     @test_throws AssertionError fpdistribution(T, A, p0bad)
+    @test_throws AssertionError fpdistribution(T, A, [1.0])
 end

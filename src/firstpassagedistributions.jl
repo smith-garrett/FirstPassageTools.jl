@@ -18,6 +18,8 @@ struct fpdistribution <: ContinuousUnivariateDistribution
         @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect"
         # Definition of A
         @assert isapprox(transpose(-T * ones(size(T, 1))), A) "Absorbing matrix A incorrect"
+        # Size of p0 should correspond to the number of transient states
+        @assert size(p0, 1) == size(T, 1) == size(A, 2) "Dimension mismatch with T, A, and/or p0"
         # p0 should be a probability distribution
         @assert isapprox(sum(p0), 1.0) "Initial condition p0 not a probability distribution"
         new(T, A, p0)
