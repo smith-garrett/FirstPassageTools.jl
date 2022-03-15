@@ -17,7 +17,7 @@ struct fpdistribution <: ContinuousUnivariateDistribution
         # At least one column of T sum to be less than zero
         @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect"
         # Definition of A
-        @assert isapprox(transpose(-T * ones(size(T, 1))), A) "Absorbing matrix A incorrect"
+        @assert isapprox(-ones(1, size(T, 1)) * T, A) "Absorbing matrix A incorrect"
         # Size of p0 should correspond to the number of transient states
         @assert size(p0, 1) == size(T, 1) == size(A, 2) "Dimension mismatch with T, A, and/or p0"
         # p0 should be a probability distribution
@@ -34,15 +34,15 @@ Distributions.mean(d::fpdistribution) = -sum(inv(d.T) * d.p0)
 Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 
 # Probability density and cumulative density functions
-Distributions.pdf(d::fpdistribution, t::Float64) = begin
+Distributions.pdf(d::fpdistribution, t::Real) = begin
     t >= 0 ? sum(d.A * expv(t, d.T, d.p0)) : zero(t)
 end
 
-Distributions.logpdf(d::fpdistribution, t::Float64) = begin
+Distributions.logpdf(d::fpdistribution, t::Real) = begin
 	log(pdf(d, t))
 end
 
-Distributions.cdf(d::fpdistribution, t::Float64) = begin
+Distributions.cdf(d::fpdistribution, t::Real) = begin
     t >= 0 ? 1 - sum(expv(t, d.T, d.p0)) : zero(t)
 end
 
