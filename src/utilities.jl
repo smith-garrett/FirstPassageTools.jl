@@ -26,6 +26,7 @@ TO DO: return state names, separated by transient/absorbing.
 """
 function setup(path::String)#; return_names=false)
     df = CSV.read(path, DataFrame, stringtype=String)
+    @assert names(df) == ["condition", "from", "to"] "Incorrect column names in .csv file."
 
     matrixlist = []
     allnames = []
