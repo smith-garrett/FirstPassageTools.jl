@@ -16,8 +16,8 @@ struct fpdistribution <: ContinuousUnivariateDistribution
     fpdistribution(T, A, p0) = begin
         # At least one column of T sum to be less than zero
         @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect"
-        # Definition of A
-        @assert isapprox(-ones(1, size(T, 1)) * T, A) "Absorbing matrix A incorrect"
+        # Definition of A: BUT ONLY FOR SYSTEMS WITH A SINGLE ABSORBING STATE!
+        #@assert isapprox(-ones(1, size(T, 1)) * T, A) "Absorbing matrix A incorrect"
         # Size of p0 should correspond to the number of transient states
         @assert size(p0, 1) == size(T, 1) == size(A, 2) "Dimension mismatch with T, A, and/or p0"
         # p0 should be a probability distribution
