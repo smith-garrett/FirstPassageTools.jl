@@ -9,14 +9,18 @@ DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 ExponentialAction = "e24c0720-ea99-47e8-929e-571b494574d3"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Memoization = "6fafb56a-5788-4b4e-91ca-c0cea6611c73"
+ReverseDiff = "37e2e3b7-166d-5795-8a7a-e32c996b4267"
 Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
+StatsPlots = "f3b207a7-027a-5e70-b257-86293d7955fd"
+Turing = "fce5fe82-541a-59a6-adf8-730c64b5f9a0"
 
 [compat]
-Distributions = "0.25"
+CSV = "0.10"
 DataFrames = "1"
+Distributions = "0.25"
 ExponentialAction = "0.1"
 Roots = "1"
-CSV = "0.10"
 julia = "1"
 
 [extras]

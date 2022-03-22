@@ -55,7 +55,7 @@ The quantile function for these distributions has no closed-form solution, so th
 uses the `find_zero` function from the `Roots` package to find the quantile numerically.
 """
 Distributions.quantile(d::fpdistribution, p) = begin
-    find_zero((x -> cdf(d, x) - p), 0.1)
+    find_zero((x -> cdf(d, x) - p), 0.0)
 end
 
 Distributions.rand(d::fpdistribution, rng::AbstractVector{<:Real}) = begin
