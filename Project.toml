@@ -21,7 +21,10 @@ DataFrames = "1"
 Distributions = "0.25"
 ExponentialAction = "0.1"
 Memoization = "0.1"
+ReverseDiff = "1"
 Roots = "1"
+Turing = "0.21"
+StatsPlots = "0.14"
 julia = "1"
 
 [extras]

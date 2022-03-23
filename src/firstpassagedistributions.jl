@@ -17,7 +17,7 @@ struct fpdistribution <: ContinuousUnivariateDistribution
         # At least one column of T sum to be less than zero
         @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect"
         # Definition of A: BUT ONLY FOR SYSTEMS WITH A SINGLE ABSORBING STATE!
-        #@assert isapprox(-ones(1, size(T, 1)) * T, A) "Absorbing matrix A incorrect"
+        @assert isapprox(vec(-ones(1, size(T, 1)) * T), vec(A'*ones(size(A, 1)))) "Absorbing matrix A incorrect"
         # Size of p0 should correspond to the number of transient states
         @assert size(p0, 1) == size(T, 1) == size(A, 2) "Dimension mismatch with T, A, and/or p0"
         # p0 should be a probability distribution
@@ -55,7 +55,8 @@ The quantile function for these distributions has no closed-form solution, so th
 uses the `find_zero` function from the `Roots` package to find the quantile numerically.
 """
 Distributions.quantile(d::fpdistribution, p) = begin
-    find_zero((x -> cdf(d, x) - p), 0.0)
+    # Using a bracketing method to find zeros
+    find_zero((x -> cdf(d, x) - p), (0, 1+p))
 end
 
 Distributions.rand(d::fpdistribution, rng::AbstractVector{<:Real}) = begin
