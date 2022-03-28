@@ -14,7 +14,7 @@ struct fpdistribution <: ContinuousUnivariateDistribution
     # Internal constructor function
     fpdistribution(T, A, p0) = begin
         # At least one column of T sum to be less than zero
-        @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect"
+        @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect:\n$T\n"
         # Definition of A: BUT ONLY FOR SYSTEMS WITH A SINGLE ABSORBING STATE!
         @assert isapprox(vec(-ones(1, size(T, 1)) * T), vec(A'*ones(size(A, 1)))) "Absorbing matrix A incorrect"
         # Size of p0 should correspond to the number of transient states
