@@ -34,7 +34,9 @@ Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 
 # Probability density and cumulative density functions
 Distributions.pdf(d::fpdistribution, t::Real) = begin
-    t >= 0 ? sum(d.A * exp(t * d.T) * d.p0) : zero(t)
+    #t >= 0 ? sum(d.A * exp(t * d.T) * d.p0) : zero(t)
+    @assert t >= 0 "Value of t must be greater than 0."
+    sum(d.A * exp(t * d.T) * d.p0)
 end
 
 Distributions.logpdf(d::fpdistribution, t::Real) = begin
@@ -42,7 +44,9 @@ Distributions.logpdf(d::fpdistribution, t::Real) = begin
 end
 
 Distributions.cdf(d::fpdistribution, t::Real) = begin
-    t >= 0 ? 1 - sum(exp(t * d.T) * d.p0) : zero(t)
+    #t >= 0 ? 1 - sum(exp(t * d.T) * d.p0) : zero(t)
+    @assert t >= 0 "Value of t must be greater than 0."
+    1 - sum(exp(t * d.T) * d.p0)
 end
 
 """
