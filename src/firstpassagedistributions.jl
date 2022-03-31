@@ -41,7 +41,8 @@ end
 Distributions.logpdf(d::fpdistribution, t::Real) = begin
 	#log(pdf(d, t))
     # Rounding is a kludge to avoid taking the log of very small negative numbers that come out of pdf()...
-    log(round(pdf(d, t), digits=16))
+    val = round(pdf(d, t), digits=16)
+    log(val)
 end
 
 Distributions.cdf(d::fpdistribution, t::Real) = begin
