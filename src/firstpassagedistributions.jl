@@ -34,20 +34,17 @@ Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 
 # Probability density and cumulative density functions
 Distributions.pdf(d::fpdistribution, t::Real) = begin
-    #t >= 0 ? sum(d.A * exp(t * d.T) * d.p0) : zero(t)
-    ifelse(t >= 0, sum(d.A * exp(t * d.T) * d.p0), zero(t))
+    # ifelse() might be faster here, but for now:
+    t >= 0 ? sum(d.A * exp(t * d.T) * d.p0) : zero(t)
 end
 
 Distributions.logpdf(d::fpdistribution, t::Real) = begin
-	#log(pdf(d, t))
-    # Rounding is a kludge to avoid taking the log of very small negative numbers that come out of pdf()...
-    val = round(pdf(d, t), digits=16)
-    log(val)
+    log(pdf(d, t))
 end
 
 Distributions.cdf(d::fpdistribution, t::Real) = begin
-    #t >= 0 ? 1 - sum(exp(t * d.T) * d.p0) : zero(t)
-    ifelse(t >= 0, 1 - sum(exp(t * d.T) * d.p0), zero(t))
+    # ifelse() might be faster here, but for now:
+    t >= 0 ? 1 - sum(exp(t * d.T) * d.p0) : zero(t)
 end
 
 """
