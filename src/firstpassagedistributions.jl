@@ -7,9 +7,9 @@ using Roots  # needed for numerically finding quantiles
 
 # Creating new methods for getting a first passage time distributions
 struct fpdistribution <: ContinuousUnivariateDistribution
-    T::Matrix{Float64}  # transient matrix
-    A::Matrix{Float64}  # absorbing matrix
-    p0::Vector{Float64}  # initial condition
+    T::Matrix{<:Real}  # transient matrix
+    A::Matrix{<:Real}  # absorbing matrix
+    p0::Vector{<:Real}  # initial condition
 
     # Internal constructor function
     fpdistribution(T, A, p0) = begin
