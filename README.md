@@ -43,4 +43,5 @@ distribution is equivalent to the exponential distribution:
 
 From here, the distribution can be fit to data. Tutorials are coming soon!
 
-
+Available methods for first-passage time distributions include `mean()`, `var()`, `rand()`,
+`pdf()`, `logpdf()`, `cdf()`, and `quantile()`.
