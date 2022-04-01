@@ -7,9 +7,9 @@ using Roots  # needed for numerically finding quantiles
 
 # Creating new methods for getting a first passage time distributions
 struct fpdistribution <: ContinuousUnivariateDistribution
-    T::Matrix  # transient matrix
-    A::Matrix  # absorbing matrix
-    p0::Vector  # initial condition
+    T::Matrix{Float64}  # transient matrix
+    A::Matrix{Float64}  # absorbing matrix
+    p0::Vector{Float64}  # initial condition
 
     # Internal constructor function
     fpdistribution(T, A, p0) = begin
@@ -33,18 +33,20 @@ Distributions.mean(d::fpdistribution) = -sum(inv(d.T) * d.p0)
 Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 
 # Probability density and cumulative density functions
-Distributions.pdf(d::fpdistribution, t::Real) = begin
+Distributions.pdf(d::fpdistribution, t::Float64) = begin
     # ifelse() might be faster here, but for now:
-    t >= 0 ? sum(d.A * exp(t * d.T) * d.p0) : zero(t)
+    ifelse(t >= 0, sum(d.A * exp(t * d.T) * d.p0), zero(t))
+    #t >= 0 ? sum(d.A * exp(t * d.T) * d.p0) : zero(t)
 end
 
-Distributions.logpdf(d::fpdistribution, t::Real) = begin
+Distributions.logpdf(d::fpdistribution, t::Float64) = begin
     log(pdf(d, t))
 end
 
-Distributions.cdf(d::fpdistribution, t::Real) = begin
+Distributions.cdf(d::fpdistribution, t::Float64) = begin
     # ifelse() might be faster here, but for now:
-    t >= 0 ? 1 - sum(exp(t * d.T) * d.p0) : zero(t)
+    ifelse(t >= 0, 1 - sum(exp(t * d.T) * d.p0), zero(t))
+    #t >= 0 ? 1 - sum(exp(t * d.T) * d.p0) : zero(t)
 end
 
 """
@@ -55,9 +57,9 @@ Return the ``p``-th quantile for the first-passage time distribution `d`.
 The quantile function for these distributions has no closed-form solution, so this method
 uses the `find_zero` function from the `Roots` package to find the quantile numerically.
 """
-Distributions.quantile(d::fpdistribution, p) = begin
+Distributions.quantile(d::fpdistribution, p::Float64) = begin
     if p <= 0
-        return 0.0
+        return zero(p)
     elseif p >= 1.0
         return Inf
     else
