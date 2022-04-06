@@ -26,58 +26,46 @@ TO DO: return state names, separated by transient/absorbing.
 """
 function setup(path::String)#; return_names=false)
     df = CSV.read(path, DataFrame, stringtype=String)
-    @assert names(df) == ["condition", "from", "to"] "Incorrect column names in .csv file."
+    @assert names(df) == ["from", "to"] "Incorrect column names in .csv file."
 
-    matrixlist = []
-    allnames = []
-    for grp in groupby(df, :condition)
-        curr_cond = grp[1, :condition]
-	    statenames = []
-	    ctr = 1
-	    nametoidx = Dict()
-	    rows = []
-	    columns = []
-        # Getting a mapping from state name to its index in the W matrix
-	    for row = 1:nrow(grp)
-	        if grp[row, :from] ∉ statenames
-	            push!(statenames, grp[row, :from])
-	            nametoidx[grp[row, :from]] = ctr
-	            ctr += 1
-	        end
-	
-	        if grp[row, :to] ∉ statenames
-	            push!(statenames, grp[row, :to])
-	            nametoidx[grp[row, :to]] = ctr
-	            ctr += 1
-	        end
-            push!(rows, nametoidx[grp[row, :to]])
-            push!(columns, nametoidx[grp[row, :from]])
-	    end
-	
-        # Setting transition rates
-	    nstates = length(statenames)
-	    W = zeros(nstates, nstates)
-        for (col, row) in zip(columns, rows)
-            W[row, col] = nstates
+    statenames = []
+    ctr = 1
+    nametoidx = Dict()
+    rows = []
+    columns = []
+    # Getting a mapping from state name to its index in the W matrix
+    for row = 1:nrow(df)
+        if df[row, :from] ∉ statenames
+            push!(statenames, df[row, :from])
+            nametoidx[df[row, :from]] = ctr
+            ctr += 1
         end
-	    W = setdiagonal!(W)
 
-        @assert 0 in W[diagind(W)] "No absorbing states provided for condition $(curr_cond)"
-        push!(matrixlist, W)
-        push!(allnames, statenames...)
+        if df[row, :to] ∉ statenames
+            push!(statenames, df[row, :to])
+            nametoidx[df[row, :to]] = ctr
+            ctr += 1
+        end
+        push!(rows, nametoidx[df[row, :to]])
+        push!(columns, nametoidx[df[row, :from]])
     end
 
-    # Separating transient and absorbing submatrices
-    full = cat(matrixlist..., dims=(1, 2))
-    (transient, absorbing) = getdims(full)
-    T = full[transient, transient]
-    A = full[absorbing, transient]
+    # Setting transition rates
+    nstates = length(statenames)
+    W = zeros(nstates, nstates)
+    for (col, row) in zip(columns, rows)
+        W[row, col] = nstates
+    end
+    W = setdiagonal!(W)
 
-#    if return_names
-#        return T, A, allnames
-#    else
+    @assert 0 in W[diagind(W)] "No absorbing states provided."
+
+    # Separating transient and absorbing submatrices
+    (transient, absorbing) = getdims(W)
+    T = W[transient, transient]
+    A = W[absorbing, transient]
+
     return T, A
-#    end
 end
 
 """
