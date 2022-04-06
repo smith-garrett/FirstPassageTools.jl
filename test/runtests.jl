@@ -53,7 +53,7 @@ end
     Terl, Aerl = setup("goodtest.csv")
     p0 = [1.0, 0]
     fperl = fpdistribution(Terl, Aerl, p0)
-    times = Array(0:5:20)
+    times = Array(0.0:5:20)
 
     @test all(isapprox.(pdf.(erl, times), pdf.(fperl, times)))
     @test all(isapprox.(logpdf.(erl, times), logpdf.(fperl, times)))
@@ -64,4 +64,12 @@ end
     @test all(isapprox.(quantile.(erl, qtiles), quantile.(fperl, qtiles), atol=1e-6))
     @test isapprox(mean(erl), mean(fperl))
     @test isapprox(var(erl), var(fperl))
+end
+
+@testset "Multiple absorbing states" begin
+    Tm, Am = setup("two_absorbing.csv")
+    two_abs = fpdistribution(Tm, Am, [1.0, 0, 0])
+    @test all(isapprox.([0.5, 0.5], splittingprobabilities(two_abs)))
+    @test_nowarn pdf.(two_abs, [0.0, 5], 1)
+    @test_nowarn pdf.(two_abs, [0.0, 5], [1, 2])
 end

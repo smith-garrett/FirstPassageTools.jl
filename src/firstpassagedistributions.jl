@@ -33,18 +33,34 @@ Distributions.mean(d::fpdistribution) = -sum(inv(d.T) * d.p0)
 Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 
 # Probability density and cumulative density functions
-Distributions.pdf(d::fpdistribution, t) = begin
+Distributions.pdf(d::fpdistribution, t::Real) = begin
     ifelse(t >= zero(t), sum(d.A * exp(t * d.T) * d.p0), zero(t))
-    #t >= 0 ? sum(d.A * exp(t * d.T) * d.p0) : zero(t)
 end
 
-Distributions.logpdf(d::fpdistribution, t) = begin
+"""
+    pdf(d::fpdistribution, t, dims)
+
+Return the conditional probability density at `t` for the absorbing dimensions given in
+`dims`.
+"""
+Distributions.pdf(d::fpdistribution, t::Real, dims) = begin
+    ifelse(t >= zero(t), getindex(d.A * exp(t * d.T) * d.p0 ./ splittingprobabilities(d), dims), zero(t))
+end
+
+Distributions.logpdf(d::fpdistribution, t::Real) = begin
     log(pdf(d, t))
 end
 
-Distributions.cdf(d::fpdistribution, t) = begin
+Distributions.logpdf(d::fpdistribution, t::Real, dims) = begin
+    log.(pdf(d, t, dims))
+end
+
+Distributions.cdf(d::fpdistribution, t::Real) = begin
     ifelse(t >= zero(t), 1 - sum(exp(t * d.T) * d.p0), zero(t))
-    #t >= 0 ? 1 - sum(exp(t * d.T) * d.p0) : zero(t)
+end
+
+Distributions.cdf(d::fpdistribution, t::Real, dims) = begin
+    error("cdf not implemented for multiple absorbing states.")
 end
 
 """
@@ -63,6 +79,10 @@ Distributions.quantile(d::fpdistribution, p) = begin
     else
         find_zero((x -> cdf(d, x) - p), p)
     end
+end
+
+Distributions.quantile(d::fpdistribution, p, dims) = begin
+    error("Quantile function not implemented for multiple absorbing states.")
 end
 
 Distributions.rand(d::fpdistribution, rng::AbstractVector{<:Real}) = begin
