@@ -56,9 +56,9 @@ function sbc(n=1000)
         # Sample a τ from the prior
         curr = rand(prior)
         # Generate data from the fpdistribution
-        dat = rand(fpdistribution(curr*T, curr*A, p0), n)
+        dat = rand(fpdistribution(curr*T, curr*A, p0), 500)
         # Fit the fpdistribution to the simulated data
-        posterior = sample(mod(dat), NUTS(0.65), n, progress=false)
+        posterior = sample(mod(dat), NUTS(100, 0.65), 500, progress=false)
         # Get the rank of curr in the posterior
         ranks[i] = count(x -> x < curr, posterior[:τ])
         #push!(ranks, count(x -> x < curr, posterior[:τ]))
@@ -70,7 +70,7 @@ end
 #'
 #' Now we run the calibration:
 
-n = 10
+n = 100
 rks = sbc(n)
 println(rks)
 
