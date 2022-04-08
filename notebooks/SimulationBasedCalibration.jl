@@ -59,7 +59,8 @@ function sbc(nranks=1000, ndata=100, nposterior=500)
         # Generate data from the fpdistribution
         dat = rand(fpdistribution(curr*T, curr*A, p0), ndata)
         # Fit the fpdistribution to the simulated data
-        posterior = sample(mod(dat), NUTS(0, 0.65), nposterior, progress=false)
+        #posterior = sample(mod(dat), NUTS(0, 0.65), nposterior, progress=false)
+        posterior = sample(mod(dat), SMC(25), nposterior, progress=false)
         # Get the rank of curr in the posterior
         ranks[i] = count(x -> x < curr, posterior[:τ])
     end
