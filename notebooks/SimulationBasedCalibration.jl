@@ -19,6 +19,8 @@ Pkg.activate("../../FirstPassageTools.jl/")
 using FirstPassageTools
 using Zygote
 Turing.setadbackend(:zygote)
+using LinearAlgebra
+LinearAlgebra.BLAS.set_num_threads(1)  # Necessary to prevent crashing with the mulithreaded code below.
 
 #' # Defining things
 #' 
@@ -49,19 +51,17 @@ end
 #' times to run the prior-generate-fit sequence, the number of data points to generate, and
 #' the number of posterior samples to sample.
 
-function sbc(n=1000)
-    ranks = zeros(n)
-    #ranks = Array{Int64, 1}
-    Threads.@threads for i = 1:n
+function sbc(nranks=1000, ndata=100, nposterior=500)
+    ranks = zeros(nranks)
+    Threads.@threads for i = 1:nranks
         # Sample a τ from the prior
         curr = rand(prior)
         # Generate data from the fpdistribution
-        dat = rand(fpdistribution(curr*T, curr*A, p0), 500)
+        dat = rand(fpdistribution(curr*T, curr*A, p0), ndata)
         # Fit the fpdistribution to the simulated data
-        posterior = sample(mod(dat), NUTS(100, 0.65), 500, progress=false)
+        posterior = sample(mod(dat), NUTS(0, 0.65), nposterior, progress=false)
         # Get the rank of curr in the posterior
         ranks[i] = count(x -> x < curr, posterior[:τ])
-        #push!(ranks, count(x -> x < curr, posterior[:τ]))
     end
     return ranks
 end
@@ -70,21 +70,22 @@ end
 #'
 #' Now we run the calibration:
 
-n = 100
-rks = sbc(n)
-println(rks)
+nr = 1000
+nd = 100
+np = 100
+@time rks = sbc(nr, nd, np)
 
 #' # Visualizing the results
 #'
 #' If the sampler is well-calibrated, the whole histogram should fall within the confidence
 #' interval in the plot.
 
-function plot_sbc(ranks, n)
-    bn = Binomial(length(ranks), (n+1)^-1)
-    fig = histogram(ranks, bins=0:n)
+function plot_sbc(ranks, nposterior)
+    bn = Binomial(length(ranks), (nposterior+1)^-1)
+    fig = histogram(ranks, bins=0:nposterior)
     hspan!(fig, quantile(bn, [0.005, 0.995]), color=:grey, alpha=0.25)
     savefig(fig, "SBCResults.pdf")
 end
 
-plot_sbc(rks, n)
+plot_sbc(rks, np)
 
