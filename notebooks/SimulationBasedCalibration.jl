@@ -54,12 +54,12 @@ end
 
 function sbc(nranks=1000, ndata=100, nposterior=500)
     ranks = zeros(nranks)
-    #taus = rand(prior, nranks)
+    taus = rand(prior, nranks)
     Threads.@threads for i = 1:nranks
         # Sample a τ from the prior
         #curr = rand(prior)
-        curr = exp(rand(prior))
-        #curr = exp(taus[i])
+        #curr = exp(rand(prior))
+        curr = exp(taus[i])
         # Generate data from the fpdistribution
         dat = rand(fpdistribution(curr*T, curr*A, p0), ndata)
         # Fit the fpdistribution to the simulated data
