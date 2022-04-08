@@ -35,7 +35,8 @@ p0 = [1.0, 0]
 #' repeatedly sampling τs from the prior, simulating data, and then fitting the model to
 #' that data.
 
-prior = truncated(Normal(1.0, 0.5), lower=0.0)
+#prior = truncated(Normal(1.0, 0.5), lower=0.0)
+prior = Normal(0.0, 0.5)
 
 #' Now, we define the model, a combination of the prior and a likelihood.
 
@@ -44,7 +45,7 @@ prior = truncated(Normal(1.0, 0.5), lower=0.0)
     τ ~ prior
     
     # Define likelihood
-    y ~ filldist(fpdistribution(τ*T, τ*A, p0), length(y))
+    y ~ filldist(fpdistribution(exp(τ)*T, exp(τ)*A, p0), length(y))
 end
 
 #' Now, we define the SBC function, which takes a single argument that is the number of
@@ -53,17 +54,21 @@ end
 
 function sbc(nranks=1000, ndata=100, nposterior=500)
     ranks = zeros(nranks)
+    #taus = rand(prior, nranks)
     Threads.@threads for i = 1:nranks
         # Sample a τ from the prior
-        curr = rand(prior)
+        #curr = rand(prior)
+        curr = exp(rand(prior))
+        #curr = exp(taus[i])
         # Generate data from the fpdistribution
         dat = rand(fpdistribution(curr*T, curr*A, p0), ndata)
         # Fit the fpdistribution to the simulated data
         #posterior = sample(mod(dat), NUTS(0, 0.65), nposterior, progress=false)
-        #posterior = sample(mod(dat), SMC(25), nposterior, progress=false)
-        posterior = sample(mod(dat), PG(25), nposterior, progress=false)
+        posterior = sample(mod(dat), SMC(25), nposterior, progress=false)
+        #posterior = sample(mod(dat), PG(25), nposterior, progress=false)
         # Get the rank of curr in the posterior
-        ranks[i] = count(x -> x < curr, posterior[:τ])
+        #ranks[i] = count(x -> x < curr, posterior[:τ])
+        ranks[i] = count(x -> exp(x) < curr, posterior[:τ])
     end
     return ranks
 end
