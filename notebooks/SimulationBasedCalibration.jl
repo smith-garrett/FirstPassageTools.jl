@@ -77,9 +77,9 @@ end
 #'
 #' Now we run the calibration:
 
-nr = 500
+nr = 1000
 nd = 50
-np = 50
+np = 100
 @time rks = sbc(nr, nd, np)
 
 #' # Visualizing the results
