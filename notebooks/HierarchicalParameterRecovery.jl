@@ -28,7 +28,7 @@ p0 = [1.0, 0, 0]
 #' around 400ms. Generating and fitting the paramters (τ and the separate τᵢ) will be done
 #' on the log scale and then exponentiated in order to keep the transition rates positive.
 
-nparticipants = 50
+nparticipants = 10
 true_tau = log(2.5)
 true_sd = 0.25
 true_tau_i = rand(Normal(0, true_sd), nparticipants)
@@ -73,7 +73,7 @@ end
 #' posterior. We'll use four chains of 1000 samples each. Make sure to execute this script
 #' with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
-posterior = sample(mod(data), PG(50), MCMCThreads(), 10, 4)
+posterior = sample(mod(data), PG(50), MCMCThreads(), 100, 4)
 
 #' ## Evaluating parameter recovery
 #' 
@@ -82,11 +82,11 @@ posterior = sample(mod(data), PG(50), MCMCThreads(), 10, 4)
 describe(posterior)
 
 #' And plot them:
-histogram(posterior[:τ], xlabel="τ")
+histogram(posterior[:τ][:], xlabel="τ")
 vline!([true_tau], label="True value")
 savefig("tau_posterior.pdf")
 
-histogram(posterior[:sd], xlabel="Std. deviation")
+histogram(posterior[:sd][:], xlabel="Std. deviation")
 vline!([true_sd], label="True value")
 savefig("sd_posterior.pdf")
 
@@ -94,7 +94,7 @@ plot_vec = []
 for p = 1:nparticipants
     curr = posterior.name_map.parameters[p]
     plt = histogram(posterior[curr][:])
-    plt = vline!(plt, [true_tau_i])
+    plt = vline!(plt, [true_tau_i[p]])
     push!(plot_vec, plt)
 end
 plot(plot_vec..., legend=false, link=:all)
