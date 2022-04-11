@@ -79,7 +79,7 @@ posterior = sample(mod(data), PG(50), MCMCThreads(), 1000, 4)
 #' 
 #' First, we summarize the chains:
 
-describe(posterior)
+show(describe(posterior))
 
 #' And plot them:
 
@@ -106,5 +106,5 @@ savefig("tau_i_posterior.pdf")
 #'
 #' Let's also look at the Gelman-Rubin statistic for the chains:
 
-gelmandiag(posterior)
+show(gelmandiag(posterior))
 
