@@ -28,7 +28,7 @@ p0 = [1.0, 0, 0]
 #' around 400ms. Generating and fitting the paramters (τ and the separate τᵢ) will be done
 #' on the log scale and then exponentiated in order to keep the transition rates positive.
 
-nparticipants = 20
+nparticipants = 50
 true_tau = log(2.5)
 true_sd = 0.25
 true_tau_i = rand(Normal(0, true_sd), nparticipants)
@@ -73,7 +73,7 @@ end
 #' posterior. We'll use four chains of 1000 samples each. Make sure to execute this script
 #' with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
-posterior = sample(mod(data), PG(50), MCMCThreads(), 1000, 4)
+posterior = sample(mod(data), PG(100), MCMCThreads(), 1000, 4)
 
 #' ## Evaluating parameter recovery
 #' 
