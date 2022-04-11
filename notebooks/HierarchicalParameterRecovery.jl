@@ -64,7 +64,10 @@ pr_sd = Exponential(0.5)  # Prior on the SD of the τᵢ
 
     # Likelihood
     mult = exp.(τ .+ τᵢ)
-    y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
+    #y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
+    for p = 1:np
+        y[p, :] ~ filldist(fpdistribution(mult[p]*T, mult[p]*A, p0), nd)
+    end
 end
 
 #' ## Sampling
