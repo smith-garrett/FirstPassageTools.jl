@@ -10,6 +10,9 @@
 #' sampling algorithm is functioning properly. This script does a reasonably thorough job of
 #' testing the NUTS sampler available in `Turing.jl` for a simple, one-parameter,
 #' non-hierarchical first-passage time model.
+#' 
+#' Note that this script should be run with `julia -t X SimulationBasedCalibration.jl` in
+#' order to run with X threads
 
 using Distributions
 using Turing
@@ -17,8 +20,6 @@ using Plots
 using Pkg
 Pkg.activate("../../FirstPassageTools.jl/")
 using FirstPassageTools
-using Zygote
-Turing.setadbackend(:zygote)
 using LinearAlgebra
 LinearAlgebra.BLAS.set_num_threads(1)  # Necessary to prevent crashing with the mulithreaded code below.
 
