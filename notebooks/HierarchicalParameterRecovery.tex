@@ -1,0 +1,416 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper,text={16.5cm,25.2cm},centering]{geometry}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.2ex}
+
+\hypersetup
+       {   pdfauthor = {  },
+           pdftitle={  },
+           colorlinks=TRUE,
+           linkcolor=black,
+           citecolor=blue,
+           urlcolor=blue
+       }
+
+
+
+
+\usepackage{upquote}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    upquote=true,
+    breaklines=true,
+    breakindent=0pt,
+    keepspaces=true,
+    showspaces=false,
+    columns=fullflexible,
+    showtabs=false,
+    showstringspaces=false,
+    escapeinside={(*@}{@*)},
+    extendedchars=true,
+}
+\newcommand{\HLJLt}[1]{#1}
+\newcommand{\HLJLw}[1]{#1}
+\newcommand{\HLJLe}[1]{#1}
+\newcommand{\HLJLeB}[1]{#1}
+\newcommand{\HLJLo}[1]{#1}
+\newcommand{\HLJLk}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkc}[1]{\textcolor[RGB]{59,151,46}{\textit{#1}}}
+\newcommand{\HLJLkd}[1]{\textcolor[RGB]{214,102,97}{\textit{#1}}}
+\newcommand{\HLJLkn}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkp}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkr}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkt}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLn}[1]{#1}
+\newcommand{\HLJLna}[1]{#1}
+\newcommand{\HLJLnb}[1]{#1}
+\newcommand{\HLJLnbp}[1]{#1}
+\newcommand{\HLJLnc}[1]{#1}
+\newcommand{\HLJLncB}[1]{#1}
+\newcommand{\HLJLnd}[1]{\textcolor[RGB]{214,102,97}{#1}}
+\newcommand{\HLJLne}[1]{#1}
+\newcommand{\HLJLneB}[1]{#1}
+\newcommand{\HLJLnf}[1]{\textcolor[RGB]{66,102,213}{#1}}
+\newcommand{\HLJLnfm}[1]{\textcolor[RGB]{66,102,213}{#1}}
+\newcommand{\HLJLnp}[1]{#1}
+\newcommand{\HLJLnl}[1]{#1}
+\newcommand{\HLJLnn}[1]{#1}
+\newcommand{\HLJLno}[1]{#1}
+\newcommand{\HLJLnt}[1]{#1}
+\newcommand{\HLJLnv}[1]{#1}
+\newcommand{\HLJLnvc}[1]{#1}
+\newcommand{\HLJLnvg}[1]{#1}
+\newcommand{\HLJLnvi}[1]{#1}
+\newcommand{\HLJLnvm}[1]{#1}
+\newcommand{\HLJLl}[1]{#1}
+\newcommand{\HLJLld}[1]{\textcolor[RGB]{148,91,176}{\textit{#1}}}
+\newcommand{\HLJLs}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsa}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsb}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsc}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsd}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsdB}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsdC}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLse}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLsh}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsi}[1]{#1}
+\newcommand{\HLJLso}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsr}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLss}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLssB}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLnB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnbB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnfB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnh}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLni}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnil}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnoB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLoB}[1]{\textcolor[RGB]{102,102,102}{\textbf{#1}}}
+\newcommand{\HLJLow}[1]{\textcolor[RGB]{102,102,102}{\textbf{#1}}}
+\newcommand{\HLJLp}[1]{#1}
+\newcommand{\HLJLc}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLch}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcm}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcp}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcpB}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcs}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcsB}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLg}[1]{#1}
+\newcommand{\HLJLgd}[1]{#1}
+\newcommand{\HLJLge}[1]{#1}
+\newcommand{\HLJLgeB}[1]{#1}
+\newcommand{\HLJLgh}[1]{#1}
+\newcommand{\HLJLgi}[1]{#1}
+\newcommand{\HLJLgo}[1]{#1}
+\newcommand{\HLJLgp}[1]{#1}
+\newcommand{\HLJLgs}[1]{#1}
+\newcommand{\HLJLgsB}[1]{#1}
+\newcommand{\HLJLgt}[1]{#1}
+
+
+\begin{document}
+
+
+
+\rule{\textwidth}{1pt}
+author: Garrett Smith title: Parameter recovery with a hierarchical model \ensuremath{\endash}-
+
+\section{Parameter recovery test using a hierarchical model}
+The goal of this script is to test the recovery of parameters from a hierarchical model
+
+
+\begin{lstlisting}
+(*@\HLJLcs{{\#}with}@*) (*@\HLJLcs{a}@*) (*@\HLJLcs{{\textasciigrave}fpdistribution{\textasciigrave}}@*) (*@\HLJLcs{likelihood.}@*)
+
+(*@\HLJLk{using}@*) (*@\HLJLn{Distributions}@*)
+(*@\HLJLk{using}@*) (*@\HLJLn{Turing}@*)
+(*@\HLJLk{using}@*) (*@\HLJLn{Plots}@*)(*@\HLJLp{,}@*) (*@\HLJLn{StatsPlots}@*)
+(*@\HLJLk{using}@*) (*@\HLJLn{Pkg}@*)
+(*@\HLJLn{Pkg}@*)(*@\HLJLoB{.}@*)(*@\HLJLnf{activate}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"{}../../FirstPassageTools.jl/"{}}@*)(*@\HLJLp{)}@*)
+(*@\HLJLk{using}@*) (*@\HLJLn{FirstPassageTools}@*)
+\end{lstlisting}
+
+
+\subsection{Generating the true data}
+First, we set up the transition rate matrices for the first-passage time distribution we want to fit.
+
+
+\begin{lstlisting}
+(*@\HLJLn{T}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{4}@*)(*@\HLJLoB{*}@*)(*@\HLJLp{[}@*)(*@\HLJLoB{-}@*)(*@\HLJLni{1}@*) (*@\HLJLni{0}@*) (*@\HLJLni{0}@*)(*@\HLJLp{;}@*) (*@\HLJLni{1}@*) (*@\HLJLoB{-}@*)(*@\HLJLni{1}@*) (*@\HLJLni{1}@*)(*@\HLJLp{;}@*) (*@\HLJLni{0}@*) (*@\HLJLni{1}@*) (*@\HLJLoB{-}@*)(*@\HLJLni{2}@*)(*@\HLJLp{]}@*)
+(*@\HLJLn{A}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{4}@*)(*@\HLJLoB{*}@*)(*@\HLJLp{[}@*)(*@\HLJLni{0}@*) (*@\HLJLni{0}@*) (*@\HLJLni{1}@*)(*@\HLJLp{]}@*)
+(*@\HLJLn{p0}@*) (*@\HLJLoB{=}@*) (*@\HLJLp{[}@*)(*@\HLJLnfB{1.0}@*)(*@\HLJLp{,}@*) (*@\HLJLni{0}@*)(*@\HLJLp{,}@*) (*@\HLJLni{0}@*)(*@\HLJLp{]}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+3-element Vector(*@{{\{}}@*)Float64(*@{{\}}}@*):
+ 1.0
+ 0.0
+ 0.0
+\end{lstlisting}
+
+
+Scaling the transition rate matrices by \texttt{\ensuremath{\tau} = 2.5} should give mean first-passage times of around 400ms. Generating and fitting the paramters (\ensuremath{\tau} and the separate \ensuremath{\tau}\ensuremath{\_i}) will be done on the log scale and then exponentiated in order to keep the transition rates positive.
+
+
+\begin{lstlisting}
+(*@\HLJLn{nparticipants}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{20}@*)
+(*@\HLJLn{true{\_}tau}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{log}@*)(*@\HLJLp{(}@*)(*@\HLJLnfB{2.5}@*)(*@\HLJLp{)}@*)
+(*@\HLJLn{true{\_}sd}@*) (*@\HLJLoB{=}@*) (*@\HLJLnfB{0.25}@*)
+(*@\HLJLn{true{\_}tau{\_}i}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{rand}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{Normal}@*)(*@\HLJLp{(}@*)(*@\HLJLni{0}@*)(*@\HLJLp{,}@*) (*@\HLJLn{true{\_}sd}@*)(*@\HLJLp{),}@*) (*@\HLJLn{nparticipants}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+20-element Vector(*@{{\{}}@*)Float64(*@{{\}}}@*):
+ -0.3320002860864489
+  0.06049712955896572
+ -0.039792049491069785
+ -0.24596052788083897
+  0.3074023245459109
+  0.08219836702929782
+ -0.09364450976323194
+ -0.04604100307585175
+ -0.050116629273839385
+  0.06685945716140113
+ -0.1076187874617376
+  0.19537766599138914
+ -0.4897451838973754
+ -0.31289022358878843
+ -0.20250100906866791
+ -0.5486531423909452
+ -0.34106867087000914
+  0.1742495612824492
+ -0.02476713336699382
+ -0.20324356282205475
+\end{lstlisting}
+
+
+The data will be saved in wide format: Each participant's data corresponds to a row, and each column is a data point.
+
+
+\begin{lstlisting}
+(*@\HLJLn{ndata}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{20}@*)
+(*@\HLJLn{data}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{zeros}@*)(*@\HLJLp{(}@*)(*@\HLJLn{nparticipants}@*)(*@\HLJLp{,}@*) (*@\HLJLn{ndata}@*)(*@\HLJLp{)}@*)
+(*@\HLJLn{param}@*) (*@\HLJLoB{=}@*) (*@\HLJLn{exp}@*)(*@\HLJLoB{.}@*)(*@\HLJLp{(}@*)(*@\HLJLn{true{\_}tau}@*) (*@\HLJLoB{.+}@*) (*@\HLJLn{true{\_}tau{\_}i}@*)(*@\HLJLp{)}@*)
+(*@\HLJLk{for}@*) (*@\HLJLn{i}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{1}@*)(*@\HLJLoB{:}@*)(*@\HLJLn{nparticipants}@*)
+    (*@\HLJLn{data}@*)(*@\HLJLp{[}@*)(*@\HLJLn{i}@*)(*@\HLJLp{,}@*)(*@\HLJLoB{:}@*)(*@\HLJLp{]}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{rand}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{fpdistribution}@*)(*@\HLJLp{(}@*)(*@\HLJLn{param}@*)(*@\HLJLp{[}@*)(*@\HLJLn{i}@*)(*@\HLJLp{]}@*)(*@\HLJLoB{*}@*)(*@\HLJLn{T}@*)(*@\HLJLp{,}@*) (*@\HLJLn{param}@*)(*@\HLJLp{[}@*)(*@\HLJLn{i}@*)(*@\HLJLp{]}@*)(*@\HLJLoB{*}@*)(*@\HLJLn{A}@*)(*@\HLJLp{,}@*) (*@\HLJLn{p0}@*)(*@\HLJLp{),}@*) (*@\HLJLn{ndata}@*)(*@\HLJLp{)}@*)
+(*@\HLJLk{end}@*)
+\end{lstlisting}
+
+
+\subsection{Specifying the model}
+First, we specify the priors on the log scale:
+
+
+\begin{lstlisting}
+(*@\HLJLn{pr{\_}tau}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{Normal}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLp{,}@*) (*@\HLJLnfB{0.25}@*)(*@\HLJLp{)}@*)
+(*@\HLJLn{pr{\_}sd}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{Exponential}@*)(*@\HLJLp{(}@*)(*@\HLJLnfB{0.5}@*)(*@\HLJLp{)}@*)  (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{Prior}@*) (*@\HLJLcs{on}@*) (*@\HLJLcs{the}@*) (*@\HLJLcs{SD}@*) (*@\HLJLcs{of}@*) (*@\HLJLcs{the}@*) (*@\HLJLcs{\ensuremath{\tau}\ensuremath{\_i}}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+Distributions.Exponential(*@{{\{}}@*)Float64(*@{{\}}}@*)((*@\ensuremath{\theta}@*)=0.5)
+\end{lstlisting}
+
+
+Next, we can write the full model including the likelihood
+
+
+\begin{lstlisting}
+(*@\HLJLnd{@model}@*) (*@\HLJLk{function}@*) (*@\HLJLnf{mod}@*)(*@\HLJLp{(}@*)(*@\HLJLn{y}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{np}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{size}@*)(*@\HLJLp{(}@*)(*@\HLJLn{y}@*)(*@\HLJLp{,}@*) (*@\HLJLni{1}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{nd}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{size}@*)(*@\HLJLp{(}@*)(*@\HLJLn{y}@*)(*@\HLJLp{,}@*) (*@\HLJLni{2}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{Priors}@*)
+    (*@\HLJLn{\ensuremath{\tau}}@*) (*@\HLJLoB{{\textasciitilde}}@*) (*@\HLJLn{pr{\_}tau}@*)
+    (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{Need}@*) (*@\HLJLcs{to}@*) (*@\HLJLcs{initialize}@*) (*@\HLJLcs{as}@*) (*@\HLJLcs{a}@*) (*@\HLJLcs{TArray}@*) (*@\HLJLcs{b/c}@*) (*@\HLJLcs{PG}@*) (*@\HLJLcs{sampler}@*)
+    (*@\HLJLn{\ensuremath{\tau}\ensuremath{\_i}}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{tzeros}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Float64}@*)(*@\HLJLp{,}@*) (*@\HLJLn{np}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{sd}@*) (*@\HLJLoB{{\textasciitilde}}@*) (*@\HLJLn{pr{\_}sd}@*)
+    (*@\HLJLn{\ensuremath{\tau}\ensuremath{\_i}}@*) (*@\HLJLoB{{\textasciitilde}}@*) (*@\HLJLnf{filldist}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{Normal}@*)(*@\HLJLp{(}@*)(*@\HLJLni{0}@*)(*@\HLJLp{,}@*) (*@\HLJLn{sd}@*)(*@\HLJLp{),}@*) (*@\HLJLn{np}@*)(*@\HLJLp{)}@*)
+
+    (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{Likelihood}@*)
+    (*@\HLJLn{mult}@*) (*@\HLJLoB{=}@*) (*@\HLJLn{exp}@*)(*@\HLJLoB{.}@*)(*@\HLJLp{(}@*)(*@\HLJLn{\ensuremath{\tau}}@*) (*@\HLJLoB{.+}@*) (*@\HLJLn{\ensuremath{\tau}\ensuremath{\_i}}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{y}@*) (*@\HLJLoB{{\textasciitilde}}@*) (*@\HLJLnf{filldist}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{arraydist}@*)(*@\HLJLp{([}@*)(*@\HLJLnf{fpdistribution}@*)(*@\HLJLp{(}@*)(*@\HLJLn{mult}@*)(*@\HLJLp{[}@*)(*@\HLJLn{p}@*)(*@\HLJLp{]}@*)(*@\HLJLoB{*}@*)(*@\HLJLn{T}@*)(*@\HLJLp{,}@*) (*@\HLJLn{mult}@*)(*@\HLJLp{[}@*)(*@\HLJLn{p}@*)(*@\HLJLp{]}@*)(*@\HLJLoB{*}@*)(*@\HLJLn{A}@*)(*@\HLJLp{,}@*) (*@\HLJLn{p0}@*)(*@\HLJLp{)}@*) (*@\HLJLk{for}@*) (*@\HLJLn{p}@*) (*@\HLJLkp{in}@*) (*@\HLJLni{1}@*)(*@\HLJLoB{:}@*)(*@\HLJLn{np}@*)(*@\HLJLp{]),}@*) (*@\HLJLn{nd}@*)(*@\HLJLp{)}@*)
+(*@\HLJLk{end}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+mod (generic function with 2 methods)
+\end{lstlisting}
+
+
+\subsection{Sampling}
+Here, we'll use the particle Gibbs sampler with 50 particles to sample from the posterior. We'll use four chains of 1000 samples each. Make sure to execute this script with \texttt{julia -t 4 HierarchicalParameterRecovery.jl}.
+
+
+\begin{lstlisting}
+(*@\HLJLn{posterior}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{sample}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{mod}@*)(*@\HLJLp{(}@*)(*@\HLJLn{data}@*)(*@\HLJLp{),}@*) (*@\HLJLnf{PG}@*)(*@\HLJLp{(}@*)(*@\HLJLni{50}@*)(*@\HLJLp{),}@*) (*@\HLJLnf{MCMCThreads}@*)(*@\HLJLp{(),}@*) (*@\HLJLni{1000}@*)(*@\HLJLp{,}@*) (*@\HLJLni{4}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+Chains MCMC chain (1000(*@\ensuremath{\times}@*)24(*@\ensuremath{\times}@*)4 Array(*@{{\{}}@*)Float64, 3(*@{{\}}}@*)):
+
+Iterations        = 1:1:1000
+Number of chains  = 4
+Samples per chain = 1000
+Wall duration     = 334.57 seconds
+Compute duration  = 1332.88 seconds
+parameters        = (*@\ensuremath{\tau}@*), sd, (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[1], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[2], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[3], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[4], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[5], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[6], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[7],
+ (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[8], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[9], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[10], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[11], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[12], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[13], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[14], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[15], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[16], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[1
+7], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[18], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[19], (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[20]
+internals         = lp, logevidence
+
+Summary Statistics
+  parameters      mean       std   naive(*@{{\_}}@*)se      mcse       ess      rhat  
+ es (*@\ensuremath{\cdots}@*)
+      Symbol   Float64   Float64    Float64   Float64   Float64   Float64  
+    (*@\ensuremath{\cdots}@*)
+
+           (*@\ensuremath{\tau}@*)    0.7877    0.0488     0.0008    0.0055   13.7494    1.4641  
+    (*@\ensuremath{\cdots}@*)
+          sd    0.1724    0.0634     0.0010    0.0071   10.7189    1.9442  
+    (*@\ensuremath{\cdots}@*)
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[1]   -0.0402    0.1169     0.0018    0.0129   12.9036    1.5620  
+    (*@\ensuremath{\cdots}@*)
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[2]    0.1039    0.1376     0.0022    0.0156   20.4472    1.2521  
+    (*@\ensuremath{\cdots}@*)
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[3]   -0.0018    0.1101     0.0017    0.0130   20.0191    1.1945  
+    (*@\ensuremath{\cdots}@*)
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[4]   -0.0304    0.1682     0.0027    0.0205    9.7269    2.2513  
+    (*@\ensuremath{\cdots}@*)
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[5]    0.1770    0.1269     0.0020    0.0143   21.5904    1.1908  
+    (*@\ensuremath{\cdots}@*)
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[6]    0.0351    0.0944     0.0015    0.0107   16.3700    1.3609  
+    (*@\ensuremath{\cdots}@*)
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[7]   -0.0186    0.1145     0.0018    0.0137   11.6923    1.7436  
+    (*@\ensuremath{\cdots}@*)
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[8]   -0.0131    0.1101     0.0017    0.0127   15.2447    1.3733  
+    (*@\ensuremath{\cdots}@*)
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[9]    0.0149    0.1496     0.0024    0.0169   16.3648    1.3508  
+    (*@\ensuremath{\cdots}@*)
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[10]    0.1266    0.0818     0.0013    0.0083   27.5361    1.2007  
+    (*@\ensuremath{\cdots}@*)
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[11]    0.0507    0.0937     0.0015    0.0100   24.1764    1.2104  
+    (*@\ensuremath{\cdots}@*)
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[12]   -0.0150    0.1569     0.0025    0.0184   11.4058    1.7623  
+    (*@\ensuremath{\cdots}@*)
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[13]   -0.2765    0.1689     0.0027    0.0196   10.7669    1.9500  
+    (*@\ensuremath{\cdots}@*)
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[14]   -0.0516    0.0965     0.0015    0.0110   16.0604    1.3410  
+    (*@\ensuremath{\cdots}@*)
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[15]   -0.0303    0.1518     0.0024    0.0181   13.6745    1.4610  
+    (*@\ensuremath{\cdots}@*)
+      (*@\ensuremath{\vdots}@*)           (*@\ensuremath{\vdots}@*)         (*@\ensuremath{\vdots}@*)         (*@\ensuremath{\vdots}@*)          (*@\ensuremath{\vdots}@*)         (*@\ensuremath{\vdots}@*)         (*@\ensuremath{\vdots}@*)     
+    (*@\ensuremath{\ddots}@*)
+                                                     1 column and 5 rows om
+itted
+
+Quantiles
+  parameters      2.5(*@{{\%}}@*)     25.0(*@{{\%}}@*)     50.0(*@{{\%}}@*)     75.0(*@{{\%}}@*)     97.5(*@{{\%}}@*)
+      Symbol   Float64   Float64   Float64   Float64   Float64
+
+           (*@\ensuremath{\tau}@*)    0.7030    0.7567    0.7993    0.8327    0.8397
+          sd    0.0954    0.1383    0.1494    0.2300    0.2839
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[1]   -0.2113   -0.0989   -0.0465    0.0770    0.1920
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[2]   -0.1794    0.0366    0.1237    0.2344    0.3144
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[3]   -0.2194   -0.0570   -0.0426    0.1093    0.1839
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[4]   -0.2748   -0.1325   -0.0598    0.0893    0.2484
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[5]   -0.1093    0.1383    0.1532    0.1738    0.4578
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[6]   -0.0975   -0.0634    0.0385    0.0940    0.3075
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[7]   -0.3342   -0.0556   -0.0207    0.0553    0.2146
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[8]   -0.2371   -0.0809   -0.0658    0.0538    0.2010
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[9]   -0.2528   -0.0701   -0.0255    0.1193    0.3291
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[10]   -0.0312    0.0734    0.1351    0.1868    0.3215
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[11]   -0.1771    0.0318    0.0540    0.1142    0.1765
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[12]   -0.2826   -0.0718   -0.0548    0.1383    0.2414
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[13]   -0.6076   -0.3980   -0.2614   -0.1551   -0.0244
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[14]   -0.2740   -0.1270   -0.0390    0.0115    0.1120
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[15]   -0.2420   -0.1645    0.0163    0.1141    0.2069
+      (*@\ensuremath{\vdots}@*)           (*@\ensuremath{\vdots}@*)         (*@\ensuremath{\vdots}@*)         (*@\ensuremath{\vdots}@*)         (*@\ensuremath{\vdots}@*)         (*@\ensuremath{\vdots}@*)
+                                                  5 rows omitted
+\end{lstlisting}
+
+
+\subsection{Evaluating parameter recovery}
+First, we summarize the chains:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{describe}@*)(*@\HLJLp{(}@*)(*@\HLJLn{posterior}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+2-element Vector(*@{{\{}}@*)MCMCChains.ChainDataFrame(*@{{\}}}@*):
+ Summary Statistics (22 x 8)
+ Quantiles (22 x 6)
+\end{lstlisting}
+
+
+And plot them:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{histogram}@*)(*@\HLJLp{(}@*)(*@\HLJLn{posterior}@*)(*@\HLJLp{[}@*)(*@\HLJLsc{:\ensuremath{\tau}}@*)(*@\HLJLp{][}@*)(*@\HLJLoB{:}@*)(*@\HLJLp{],}@*) (*@\HLJLn{xlabel}@*)(*@\HLJLoB{=}@*)(*@\HLJLs{"{}\ensuremath{\tau}"{}}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{vline!}@*)(*@\HLJLp{([}@*)(*@\HLJLn{true{\_}tau}@*)(*@\HLJLp{],}@*) (*@\HLJLn{label}@*)(*@\HLJLoB{=}@*)(*@\HLJLs{"{}True}@*) (*@\HLJLs{value"{}}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{savefig}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"{}tau{\_}posterior.pdf"{}}@*)(*@\HLJLp{)}@*)
+
+(*@\HLJLnf{histogram}@*)(*@\HLJLp{(}@*)(*@\HLJLn{posterior}@*)(*@\HLJLp{[}@*)(*@\HLJLsc{:sd}@*)(*@\HLJLp{][}@*)(*@\HLJLoB{:}@*)(*@\HLJLp{],}@*) (*@\HLJLn{xlabel}@*)(*@\HLJLoB{=}@*)(*@\HLJLs{"{}Std.}@*) (*@\HLJLs{deviation"{}}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{vline!}@*)(*@\HLJLp{([}@*)(*@\HLJLn{true{\_}sd}@*)(*@\HLJLp{],}@*) (*@\HLJLn{label}@*)(*@\HLJLoB{=}@*)(*@\HLJLs{"{}True}@*) (*@\HLJLs{value"{}}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{savefig}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"{}sd{\_}posterior.pdf"{}}@*)(*@\HLJLp{)}@*)
+
+(*@\HLJLn{plot{\_}vec}@*) (*@\HLJLoB{=}@*) (*@\HLJLp{[]}@*)
+(*@\HLJLk{for}@*) (*@\HLJLn{p}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{1}@*)(*@\HLJLoB{:}@*)(*@\HLJLn{nparticipants}@*)
+    (*@\HLJLn{curr}@*) (*@\HLJLoB{=}@*) (*@\HLJLn{posterior}@*)(*@\HLJLoB{.}@*)(*@\HLJLn{name{\_}map}@*)(*@\HLJLoB{.}@*)(*@\HLJLn{parameters}@*)(*@\HLJLp{[}@*)(*@\HLJLn{p}@*)(*@\HLJLp{]}@*)
+    (*@\HLJLn{plt}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{histogram}@*)(*@\HLJLp{(}@*)(*@\HLJLn{posterior}@*)(*@\HLJLp{[}@*)(*@\HLJLn{curr}@*)(*@\HLJLp{][}@*)(*@\HLJLoB{:}@*)(*@\HLJLp{])}@*)
+    (*@\HLJLn{plt}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{vline!}@*)(*@\HLJLp{(}@*)(*@\HLJLn{plt}@*)(*@\HLJLp{,}@*) (*@\HLJLp{[}@*)(*@\HLJLn{true{\_}tau{\_}i}@*)(*@\HLJLp{[}@*)(*@\HLJLn{p}@*)(*@\HLJLp{]])}@*)
+    (*@\HLJLnf{push!}@*)(*@\HLJLp{(}@*)(*@\HLJLn{plot{\_}vec}@*)(*@\HLJLp{,}@*) (*@\HLJLn{plt}@*)(*@\HLJLp{)}@*)
+(*@\HLJLk{end}@*)
+(*@\HLJLnf{plot}@*)(*@\HLJLp{(}@*)(*@\HLJLn{plot{\_}vec}@*)(*@\HLJLoB{...}@*)(*@\HLJLp{,}@*) (*@\HLJLn{legend}@*)(*@\HLJLoB{=}@*)(*@\HLJLkc{false}@*)(*@\HLJLp{,}@*) (*@\HLJLn{link}@*)(*@\HLJLoB{=:}@*)(*@\HLJLn{all}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{savefig}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"{}tau{\_}i{\_}posterior.pdf"{}}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+
+If the posterior contains the true values of the parameters, we can say the parameters were recovered successfully.
+
+Let's also look at the Gelman-Rubin statistic for the chains:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{gelmandiag}@*)(*@\HLJLp{(}@*)(*@\HLJLn{posterior}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+Gelman, Rubin, and Brooks diagnostic
+  parameters      psrf    psrfci
+      Symbol   Float64   Float64
+
+           (*@\ensuremath{\tau}@*)    1.6244    2.4227
+          sd    1.5032    2.7904
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[1]    1.6373    2.6713
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[2]    1.4710    2.6033
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[3]    1.1636    1.4788
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[4]    2.6537    4.6266
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[5]    1.3239    2.3018
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[6]    1.5911    2.5098
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[7]    1.2741    1.9523
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[8]    1.2754    1.7586
+       (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[9]    1.2316    1.7391
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[10]    1.0461    1.1256
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[11]    1.1414    1.3584
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[12]    1.5741    2.4085
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[13]    1.4588    2.4631
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[14]    1.1355    1.3609
+      (*@\ensuremath{\tau}@*)(*@\ensuremath{\_i}@*)[15]    1.6632    2.8722
+      (*@\ensuremath{\vdots}@*)           (*@\ensuremath{\vdots}@*)         (*@\ensuremath{\vdots}@*)
+                    5 rows omitted
+\end{lstlisting}
+
+
+
+\end{document}
