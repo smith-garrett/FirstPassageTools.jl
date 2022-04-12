@@ -28,7 +28,7 @@ p0 = [1.0, 0, 0]
 #' around 400ms. Generating and fitting the paramters (τ and the separate τᵢ) will be done
 #' on the log scale and then exponentiated in order to keep the transition rates positive.
 
-nparticipants = 50
+nparticipants = 10
 true_tau = log(2.5)
 true_sd = 0.25
 true_tau_i = rand(Normal(0, true_sd), nparticipants)
@@ -36,7 +36,7 @@ true_tau_i = rand(Normal(0, true_sd), nparticipants)
 #' The data will be saved in wide format: Each participant's data corresponds to a row, and
 #' each column is a data point.
 
-ndata = 20
+ndata = 10
 data = zeros(nparticipants, ndata)
 param = exp.(true_tau .+ true_tau_i)
 for i = 1:nparticipants
@@ -65,8 +65,10 @@ pr_sd = Exponential(0.5)  # Prior on the SD of the τᵢ
     # Likelihood
     mult = exp.(τ .+ τᵢ)
     #y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
-    for p = 1:np
-        y[p, :] ~ filldist(fpdistribution(mult[p]*T, mult[p]*A, p0), nd)
+    for d = 1:nd
+        for p = 1:np
+            y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
+        end
     end
 end
 
@@ -76,13 +78,13 @@ end
 #' posterior. We'll use four chains of 1000 samples each. Make sure to execute this script
 #' with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
-posterior = sample(mod(data), PG(100), MCMCThreads(), 1000, 4)
+posterior = sample(mod(data), PG(50), MCMCThreads(), 100, 4)
 
 #' ## Evaluating parameter recovery
 #' 
 #' First, we summarize the chains:
 
-show(describe(posterior))
+print(describe(posterior))
 
 #' And plot them:
 
@@ -109,5 +111,5 @@ savefig("tau_i_posterior.pdf")
 #'
 #' Let's also look at the Gelman-Rubin statistic for the chains:
 
-show(gelmandiag(posterior))
+print(gelmandiag(posterior))
 
