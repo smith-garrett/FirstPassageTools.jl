@@ -57,27 +57,30 @@ pr_sd = Exponential(0.5)  # Prior on the SD of the τᵢ
 @model function mod(y)
     np = size(y, 1)
     nd = size(y, 2)
-    τᵢ = tzeros(Float64, np)
-    τ = tzeros(Float64, 1)
+    #τᵢ = tzeros(Float64, np)
+    #τ = tzeros(Float64, 1)
     #sd = tzeros(Float64, 1)
     # Priors
     τ ~ pr_tau
     #sd ~ pr_sd
     #τᵢ ~ filldist(Normal(0, sd), np)
-    #τᵢ ~ filldist(Normal(0, true_sd), np)
-    for i = 1:np
+    τᵢ ~ filldist(Normal(0, true_sd), np)
+    #for i = 1:np
         #τᵢ[i] ~ Normal(0, sd)
-        τᵢ[i] ~ Normal(0, true_sd)
-    end
+    #    τᵢ[i] ~ Normal(0, true_sd)
+    #end
 
     # Likelihood
     mult = exp.(τ .+ τᵢ)
     #y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
-    for d = 1:nd
-        for p = 1:np
-            y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
-        end
+    for p in 1:np
+        y[p,:] ~ filldist(fpdistribution(mult[p]*T, mult[p]*A, p0), nd)
     end
+    #for d = 1:nd
+    #    for p = 1:np
+    #        y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
+    #    end
+    #end
 end
 
 #' ## Sampling
@@ -86,16 +89,16 @@ end
 #' posterior. We'll use four chains of 1000 samples each. Make sure to execute this script
 #' with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
-posterior = sample(mod(data), PG(25), MCMCThreads(), 500, 4)
+#posterior = sample(mod(data), PG(25), MCMCThreads(), 500, 4)
 #posterior = sample(mod(data), SMC(200), MCMCThreads(), 500, 4)
-#posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
-#posterior = sample(mod(data), NUTS(100, 0.65), MCMCThreads(), 100, 4)
+posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
+#posterior = sample(mod(data), NUTS(100, 0.65), 100)
 
 #' ## Evaluating parameter recovery
 #' 
 #' First, we summarize the chains:
 
-print(describe(posterior))
+println(describe(posterior))
 
 #' And plot them:
 
@@ -122,5 +125,5 @@ savefig("tau_i_posterior.pdf")
 #'
 #' Let's also look at the Gelman-Rubin statistic for the chains:
 
-print(gelmandiag(posterior))
+println(gelmandiag(posterior))
 
