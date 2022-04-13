@@ -60,7 +60,10 @@ pr_sd = Exponential(0.5)  # Prior on the SD of the τᵢ
     # Need to initialize as a TArray b/c PG sampler
     τᵢ = tzeros(Float64, np)
     sd ~ pr_sd
-    τᵢ ~ filldist(Normal(0, sd), np)
+    #τᵢ ~ filldist(Normal(0, sd), np)
+    for i = 1:np
+        τᵢ[i] ~ Normal(0, sd)
+    end
 
     # Likelihood
     mult = exp.(τ .+ τᵢ)
@@ -79,8 +82,8 @@ end
 #' with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
 #posterior = sample(mod(data), PG(50), MCMCThreads(), 500, 4)
-#posterior = sample(mod(data), SMC(200), MCMCThreads(), 500, 4)
-posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
+posterior = sample(mod(data), SMC(200), MCMCThreads(), 500, 4)
+#posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
 
 #' ## Evaluating parameter recovery
 #' 
@@ -105,7 +108,7 @@ for p = 1:nparticipants
     plt = vline!(plt, [true_tau_i[p]])
     push!(plot_vec, plt)
 end
-plot(plot_vec..., legend=false, link=:all)
+plot(plot_vec..., legend=false, xaxis=false, yaxis=false)
 savefig("tau_i_posterior.pdf")
 
 #' If the posterior contains the true values of the parameters, we can say the parameters
