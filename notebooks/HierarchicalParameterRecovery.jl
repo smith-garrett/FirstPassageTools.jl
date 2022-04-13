@@ -85,9 +85,9 @@ end
 #' posterior. We'll use four chains of 1000 samples each. Make sure to execute this script
 #' with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
-#posterior = sample(mod(data), PG(50), MCMCThreads(), 500, 4)
+posterior = sample(mod(data), PG(25), MCMCThreads(), 500, 4)
 #posterior = sample(mod(data), SMC(200), MCMCThreads(), 500, 4)
-posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
+#posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
 #posterior = sample(mod(data), NUTS(100, 0.65), MCMCThreads(), 100, 4)
 
 #' ## Evaluating parameter recovery
@@ -109,11 +109,11 @@ savefig("tau_posterior.pdf")
 plot_vec = []
 for p = 1:nparticipants
     curr = posterior.name_map.parameters[p]
-    plt = histogram(posterior[curr][:])
+    plt = histogram(posterior[curr][:], xticks=false, yticks=false)
     plt = vline!(plt, [true_tau_i[p]])
     push!(plot_vec, plt)
 end
-plot(plot_vec..., legend=false, xaxis=false, yaxis=false)
+plot(plot_vec..., legend=false)
 savefig("tau_i_posterior.pdf")
 
 #' If the posterior contains the true values of the parameters, we can say the parameters
