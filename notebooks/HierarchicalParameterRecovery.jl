@@ -55,10 +55,11 @@ pr_sd = Exponential(0.5)  # Prior on the SD of the τᵢ
 @model function mod(y)
     np = size(y, 1)
     nd = size(y, 2)
+    τᵢ = tzeros(Float64, np)
+    τ = tzeros(Float64, 1)
+    sd = tzeros(Float64, 1)
     # Priors
     τ ~ pr_tau
-    # Need to initialize as a TArray b/c PG sampler
-    τᵢ = tzeros(Float64, np)
     sd ~ pr_sd
     #τᵢ ~ filldist(Normal(0, sd), np)
     for i = 1:np
