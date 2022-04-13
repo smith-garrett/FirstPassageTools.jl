@@ -79,7 +79,8 @@ end
 #' with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
 #posterior = sample(mod(data), PG(50), MCMCThreads(), 500, 4)
-posterior = sample(mod(data), SMC(200), MCMCThreads(), 500, 4)
+#posterior = sample(mod(data), SMC(200), MCMCThreads(), 500, 4)
+posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
 
 #' ## Evaluating parameter recovery
 #' 
