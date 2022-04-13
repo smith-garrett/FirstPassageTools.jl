@@ -57,26 +57,27 @@ pr_sd = Exponential(0.5)  # Prior on the SD of the τᵢ
 @model function mod(y)
     np = size(y, 1)
     nd = size(y, 2)
-    #τᵢ = tzeros(Float64, np)
-    #τ = tzeros(Float64, 1)
+    τᵢ = tzeros(Float64, np)
+    τ = tzeros(Float64, 1)
     #sd = tzeros(Float64, 1)
     # Priors
     τ ~ pr_tau
     #sd ~ pr_sd
     #τᵢ ~ filldist(Normal(0, sd), np)
-    τᵢ ~ filldist(Normal(0, true_sd), np)
-    #for i = 1:np
-    #    τᵢ[i] ~ Normal(0, sd)
-    #end
+    #τᵢ ~ filldist(Normal(0, true_sd), np)
+    for i = 1:np
+        #τᵢ[i] ~ Normal(0, sd)
+        τᵢ[i] ~ Normal(0, true_sd)
+    end
 
     # Likelihood
     mult = exp.(τ .+ τᵢ)
-    y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
-    #for d = 1:nd
-    #    for p = 1:np
-    #        y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
-    #    end
-    #end
+    #y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
+    for d = 1:nd
+        for p = 1:np
+            y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
+        end
+    end
 end
 
 #' ## Sampling
