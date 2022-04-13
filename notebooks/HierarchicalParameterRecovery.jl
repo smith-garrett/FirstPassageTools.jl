@@ -78,7 +78,8 @@ end
 #' posterior. We'll use four chains of 1000 samples each. Make sure to execute this script
 #' with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
-posterior = sample(mod(data), PG(50), MCMCThreads(), 500, 4)
+#posterior = sample(mod(data), PG(50), MCMCThreads(), 500, 4)
+posterior = sample(mod(data), SMC(50), MCMCThreads(), 500, 4)
 
 #' ## Evaluating parameter recovery
 #' 
