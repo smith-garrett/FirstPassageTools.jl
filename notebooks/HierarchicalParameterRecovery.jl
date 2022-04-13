@@ -106,15 +106,15 @@ savefig("tau_posterior.pdf")
 #vline!([true_sd], label="True value")
 #savefig("sd_posterior.pdf")
 #
-#plot_vec = []
-#for p = 1:nparticipants
-#    curr = posterior.name_map.parameters[p]
-#    plt = histogram(posterior[curr][:])
-#    plt = vline!(plt, [true_tau_i[p]])
-#    push!(plot_vec, plt)
-#end
-#plot(plot_vec..., legend=false, xaxis=false, yaxis=false)
-#savefig("tau_i_posterior.pdf")
+plot_vec = []
+for p = 1:nparticipants
+    curr = posterior.name_map.parameters[p]
+    plt = histogram(posterior[curr][:])
+    plt = vline!(plt, [true_tau_i[p]])
+    push!(plot_vec, plt)
+end
+plot(plot_vec..., legend=false, xaxis=false, yaxis=false)
+savefig("tau_i_posterior.pdf")
 
 #' If the posterior contains the true values of the parameters, we can say the parameters
 #' were recovered successfully.
