@@ -10,6 +10,8 @@
 
 using Distributions
 using Turing
+#using Zygote
+#Turing.setadbackend(:zygote)
 using Plots, StatsPlots
 using Pkg
 Pkg.activate("../../FirstPassageTools.jl/")
@@ -55,25 +57,26 @@ pr_sd = Exponential(0.5)  # Prior on the SD of the τᵢ
 @model function mod(y)
     np = size(y, 1)
     nd = size(y, 2)
-    τᵢ = tzeros(Float64, np)
-    τ = tzeros(Float64, 1)
-    sd = tzeros(Float64, 1)
+    #τᵢ = tzeros(Float64, np)
+    #τ = tzeros(Float64, 1)
+    #sd = tzeros(Float64, 1)
     # Priors
     τ ~ pr_tau
-    sd ~ pr_sd
+    #sd ~ pr_sd
     #τᵢ ~ filldist(Normal(0, sd), np)
-    for i = 1:np
-        τᵢ[i] ~ Normal(0, sd)
-    end
+    τᵢ ~ filldist(Normal(0, true_sd), np)
+    #for i = 1:np
+    #    τᵢ[i] ~ Normal(0, sd)
+    #end
 
     # Likelihood
     mult = exp.(τ .+ τᵢ)
-    #y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
-    for d = 1:nd
-        for p = 1:np
-            y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
-        end
-    end
+    y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
+    #for d = 1:nd
+    #    for p = 1:np
+    #        y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
+    #    end
+    #end
 end
 
 #' ## Sampling
@@ -83,8 +86,9 @@ end
 #' with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
 #posterior = sample(mod(data), PG(50), MCMCThreads(), 500, 4)
-posterior = sample(mod(data), SMC(200), MCMCThreads(), 500, 4)
-#posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
+#posterior = sample(mod(data), SMC(200), MCMCThreads(), 500, 4)
+posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
+#posterior = sample(mod(data), NUTS(100, 0.65), MCMCThreads(), 100, 4)
 
 #' ## Evaluating parameter recovery
 #' 
@@ -98,19 +102,19 @@ histogram(posterior[:τ][:], xlabel="τ")
 vline!([true_tau], label="True value")
 savefig("tau_posterior.pdf")
 
-histogram(posterior[:sd][:], xlabel="Std. deviation")
-vline!([true_sd], label="True value")
-savefig("sd_posterior.pdf")
-
-plot_vec = []
-for p = 1:nparticipants
-    curr = posterior.name_map.parameters[p]
-    plt = histogram(posterior[curr][:])
-    plt = vline!(plt, [true_tau_i[p]])
-    push!(plot_vec, plt)
-end
-plot(plot_vec..., legend=false, xaxis=false, yaxis=false)
-savefig("tau_i_posterior.pdf")
+#histogram(posterior[:sd][:], xlabel="Std. deviation")
+#vline!([true_sd], label="True value")
+#savefig("sd_posterior.pdf")
+#
+#plot_vec = []
+#for p = 1:nparticipants
+#    curr = posterior.name_map.parameters[p]
+#    plt = histogram(posterior[curr][:])
+#    plt = vline!(plt, [true_tau_i[p]])
+#    push!(plot_vec, plt)
+#end
+#plot(plot_vec..., legend=false, xaxis=false, yaxis=false)
+#savefig("tau_i_posterior.pdf")
 
 #' If the posterior contains the true values of the parameters, we can say the parameters
 #' were recovered successfully.
