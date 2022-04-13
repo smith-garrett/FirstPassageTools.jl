@@ -73,14 +73,15 @@ pr_sd = Exponential(0.5)  # Prior on the SD of the τᵢ
     # Likelihood
     mult = exp.(τ .+ τᵢ)
     #y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
-    for p in 1:np
-        y[p,:] ~ filldist(fpdistribution(mult[p]*T, mult[p]*A, p0), nd)
-    end
-    #for d = 1:nd
-    #    for p = 1:np
-    #        y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
-    #    end
+    #for p in 1:np
+    #    y[p,:] ~ filldist(fpdistribution(mult[p]*T, mult[p]*A, p0), nd)
     #end
+    for d = 1:nd
+        for p = 1:np
+            #y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
+            Turing.@addlogprob! logpdf(fpdistribution(mult[p]*T, mult[p]*A, p0), y[p, d])
+        end
+    end
 end
 
 #' ## Sampling
