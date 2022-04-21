@@ -10,8 +10,8 @@
 
 using Distributions
 using Turing
-#using Zygote
-#Turing.setadbackend(:zygote)
+using Zygote
+Turing.setadbackend(:zygote)
 using Plots, StatsPlots
 using Pkg
 Pkg.activate("../../FirstPassageTools.jl/")
@@ -31,100 +31,83 @@ p0 = [1.0, 0, 0]
 #' on the log scale and then exponentiated in order to keep the transition rates positive.
 
 nparticipants = 25
-true_tau = log(2.5)
+true_tau = 2.5
 true_sd = 0.25
-true_tau_i = rand(Normal(0, true_sd), nparticipants)
+true_tau_i = exp.(rand(Normal(0, true_sd), nparticipants))
 
 #' The data will be saved in wide format: Each participant's data corresponds to a row, and
 #' each column is a data point.
 
-ndata = 40
+ndata = 10
 data = zeros(nparticipants, ndata)
-param = exp.(true_tau .+ true_tau_i)
+param = true_tau .* true_tau_i
 for i = 1:nparticipants
     data[i,:] = rand(fpdistribution(param[i]*T, param[i]*A, p0), ndata)
 end
 
 #' ## Specifying the model
 #'
-#' First, we specify the priors on the log scale:
-
-pr_tau = Normal(1, 0.25)
-pr_sd = Exponential(0.5)  # Prior on the SD of the τᵢ
-
-#' Next, we can write the full model including the likelihood
+#' Now, we can write the full model including the likelihood. Note that we're using a
+#' non-centered parameterization. This is because pilot simulations suggested that
+#' sampling was biased in the centered parameterization.
 
 @model function mod(y)
-    np = size(y, 1)
-    nd = size(y, 2)
-    #τᵢ = tzeros(Float64, np)
-    #τ = tzeros(Float64, 1)
-    #sd = tzeros(Float64, 1)
+    np, nd = size(y)
     # Priors
-    τ ~ pr_tau
-    #sd ~ pr_sd
-    #τᵢ ~ filldist(Normal(0, sd), np)
-    τᵢ ~ filldist(Normal(0, true_sd), np)
-    #for i = 1:np
-        #τᵢ[i] ~ Normal(0, sd)
-    #    τᵢ[i] ~ Normal(0, true_sd)
-    #end
-
+    # Using the non-centered parameterization for τ
+    τ ~ Normal()
+    τ̂ = 1 + 0.1*τ  # Corresponds to Normal(1, 0.1)
+    sd ~ Exponential(0.25)
+    τᵢ ~ filldist(Normal(), np)
+    τ̂ᵢ = sd.*τᵢ  # Corresponds to MvNormal(0, sd)
     # Likelihood
-    mult = exp.(τ .+ τᵢ)
-    #y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
-    #for p in 1:np
-    #    y[p,:] ~ filldist(fpdistribution(mult[p]*T, mult[p]*A, p0), nd)
-    #end
-    for d = 1:nd
-        for p = 1:np
-            #y[p, d] ~ fpdistribution(mult[p]*T, mult[p]*A, p0)
-            Turing.@addlogprob! logpdf(fpdistribution(mult[p]*T, mult[p]*A, p0), y[p, d])
-        end
-    end
+    mult = exp.(τ̂ .+ τ̂ᵢ)
+    y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
+    return τ̂, τ̂ᵢ
 end
 
 #' ## Sampling
 #'
-#' Here, we'll use the particle Gibbs sampler with 50 particles to sample from the
-#' posterior. We'll use four chains of 1000 samples each. Make sure to execute this script
-#' with `julia -t 4 HierarchicalParameterRecovery.jl`.
+#' Here, we'll use the NUTS sampler with a burnin of 100 samples and an acceptance rate of 
+#' 0.65 posterior. We'll use four chains of 1000 samples each. Make sure to execute this 
+#' script with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
-#posterior = sample(mod(data), PG(25), MCMCThreads(), 500, 4)
-#posterior = sample(mod(data), SMC(200), MCMCThreads(), 500, 4)
-posterior = sample(mod(data), MH(), MCMCThreads(), 5000, 4)
-#posterior = sample(mod(data), NUTS(100, 0.65), 100)
+posterior = sample(mod(data), NUTS(100, 0.65; init_ϵ=0.1), MCMCThreads(), 500, 4)
 
 #' ## Evaluating parameter recovery
 #' 
 #' First, we summarize the chains:
 
-println(describe(posterior))
+posterior
 
-#' And plot them:
+#' And plot histograms of the parameters on the millisecond scale:
+#+ echo=false
+gen = generated_quantities(mod(data), posterior)
+gen = vcat(gen...)
+gen_tau = [x[1] for x in gen]
+gen_tau_i = transpose(hcat([x[2] for x in gen]...))
 
-histogram(posterior[:τ][:], xlabel="τ")
-vline!([true_tau], label="True value")
-savefig("tau_posterior.pdf")
+#+ fig_cap="Posterior distribution of τ. Vertical lines show the true value."
+histogram(exp.(gen_tau), xlabel="τ")
+vline!([true_tau])
 
-#histogram(posterior[:sd][:], xlabel="Std. deviation")
-#vline!([true_sd], label="True value")
-#savefig("sd_posterior.pdf")
-#
+#' fig_cap="Posterior distribution of the SD. Vertical lines show the true value."
+histogram(posterior[:sd][:], xlabel="Std. deviation of the τᵢ")
+vline!([true_sd], label="True value")
+
+#' fig_cap="Posterior distributions of the τᵢ. Vertical lines show the true value."
 plot_vec = []
 for p = 1:nparticipants
-    curr = posterior.name_map.parameters[p]
-    plt = histogram(posterior[curr][:], xticks=false, yticks=false)
+    plt = histogram(exp.(gen_tau_i[:,p]), xticks=false, yticks=false)
     plt = vline!(plt, [true_tau_i[p]])
     push!(plot_vec, plt)
 end
 plot(plot_vec..., legend=false)
-savefig("tau_i_posterior.pdf")
 
 #' If the posterior contains the true values of the parameters, we can say the parameters
 #' were recovered successfully.
 #'
 #' Let's also look at the Gelman-Rubin statistic for the chains:
 
-println(gelmandiag(posterior))
+gelmandiag(posterior)
 
