@@ -55,13 +55,15 @@ end
     np, nd = size(y)
     # Priors
     # Using the non-centered parameterization for τ
-    τ ~ Normal()
-    τ̂ = 1 + 0.1*τ  # Corresponds to Normal(1, 0.1)
+    #τ ~ Normal()
+    #τ̂ = 1 + 0.1*τ  # Corresponds to Normal(1, 0.1)
+    τ ~ Normal(1, 0.1)
     sd ~ Exponential(0.25)
     τᵢ ~ filldist(Normal(), np)
     τ̂ᵢ = sd.*τᵢ  # Corresponds to MvNormal(0, sd)
     # Likelihood
-    mult = exp.(τ̂ .+ τ̂ᵢ)
+    #mult = exp.(τ̂ .+ τ̂ᵢ)
+    mult = exp.(τ .* τ̂ᵢ)
     y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
     return τ̂, τ̂ᵢ
 end
