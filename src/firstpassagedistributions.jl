@@ -6,13 +6,14 @@ using Distributions
 using Roots  # needed for numerically finding quantiles
 
 # Creating new methods for getting a first passage time distributions
-struct fpdistribution <: ContinuousUnivariateDistribution
-    T::Matrix{<:Real}  # transient matrix
-    A::Matrix{<:Real}  # absorbing matrix
-    p0::Vector{<:Real}  # initial condition
+struct fpdistribution{T1, T2} <: ContinuousUnivariateDistribution
+    T::T1  # transient matrix
+    A::T1  # absorbing matrix
+    p0::T2  # initial condition
 
     # Internal constructor function
-    fpdistribution(T, A, p0) = begin
+    #fpdistribution(T::T1, A::T2, p0::T3) where {T1<:AbstractArray, T2<:AbstractArray, T3<:AbstractVector} = begin
+    fpdistribution(T::T1, A::T1, p0::T2) where {T1, T2} = begin
         # At least one column of T sum to be less than zero
         @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect:\n$T\n"
         # Definition of A: BUT ONLY FOR SYSTEMS WITH A SINGLE ABSORBING STATE!
@@ -21,7 +22,7 @@ struct fpdistribution <: ContinuousUnivariateDistribution
         @assert size(p0, 1) == size(T, 1) == size(A, 2) "Dimension mismatch with T, A, and/or p0"
         # p0 should be a probability distribution
         @assert isapprox(sum(p0), 1.0) "Initial condition p0 not a probability distribution"
-        new(T, A, p0)
+        new{T1, T2}(T, A, p0)
     end
 end
 

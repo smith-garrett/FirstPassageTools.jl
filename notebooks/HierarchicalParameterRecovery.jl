@@ -34,6 +34,7 @@ nparticipants = 25
 true_tau = 2.5
 true_sd = 0.25
 true_tau_i = exp.(rand(Normal(0, true_sd), nparticipants))
+#true_tau_i = rand(Normal(0, true_sd), nparticipants)
 
 #' The data will be saved in wide format: Each participant's data corresponds to a row, and
 #' each column is a data point.
@@ -41,6 +42,7 @@ true_tau_i = exp.(rand(Normal(0, true_sd), nparticipants))
 ndata = 10
 data = zeros(nparticipants, ndata)
 param = true_tau .* true_tau_i
+#param = true_tau .+ true_tau_i
 for i = 1:nparticipants
     data[i,:] = rand(fpdistribution(param[i]*T, param[i]*A, p0), ndata)
 end
@@ -51,36 +53,52 @@ end
 #' non-centered parameterization. This is because pilot simulations suggested that
 #' sampling was biased in the centered parameterization.
 
+# Switch to param = exp(tau) + exp(tau_i). This will prevent really small params b/c multiplication. 
 @model function mod(y)
     np, nd = size(y)
     # Priors
     # Using the non-centered parameterization for τ
-    #τ ~ Normal()
-    #τ̂ = 1 + 0.1*τ  # Corresponds to Normal(1, 0.1)
-    τ ~ Normal(1, 0.1)
+    τ ~ Normal()
+    τ̂ = 1 + 0.1*τ  # Corresponds to Normal(1, 0.1)
     sd ~ Exponential(0.25)
     τᵢ ~ filldist(Normal(), np)
     τ̂ᵢ = sd.*τᵢ  # Corresponds to MvNormal(0, sd)
     # Likelihood
-    #mult = exp.(τ̂ .+ τ̂ᵢ)
-    mult = exp.(τ .* τ̂ᵢ)
+    mult = exp.(τ̂ .+ τ̂ᵢ)
     y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
     return τ̂, τ̂ᵢ
+    #return τ̂ᵢ
 end
 
+@model function mod_centered(y)
+    np, nd = size(y)
+    # Priors
+    # Using the centered parameterization for τ
+    τ ~ Normal(1, 0.1)
+    sd ~ Exponential(0.25)
+    τᵢ ~ filldist(Normal(0, sd), np)
+    # Likelihood
+    mult = exp.(τ .+ τᵢ)
+    y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
+end
 #' ## Sampling
 #'
 #' Here, we'll use the NUTS sampler with a burnin of 100 samples and an acceptance rate of 
 #' 0.65 posterior. We'll use four chains of 1000 samples each. Make sure to execute this 
 #' script with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
-posterior = sample(mod(data), NUTS(100, 0.65; init_ϵ=0.1), MCMCThreads(), 500, 4)
+#posterior = sample(mod(data), NUTS(100, 0.65; init_ϵ=0.1), MCMCThreads(), 500, 4)
+posterior = sample(mod(data), NUTS(100, 0.65), 500);
+posterior_centered = sample(mod_centered(data), NUTS(100, 0.65), 500);
 
 #' ## Evaluating parameter recovery
 #' 
 #' First, we summarize the chains:
 
 posterior
+
+#' And the centered version:
+posterior_centered
 
 #' And plot histograms of the parameters on the millisecond scale:
 #+ echo=false
