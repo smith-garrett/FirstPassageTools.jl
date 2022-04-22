@@ -32,14 +32,14 @@ p0 = [1.0, 0, 0]
 
 nparticipants = 25
 true_tau = 2.5
-true_sd = 0.25
+true_sd = 0.1
 true_tau_i = exp.(rand(Normal(0, true_sd), nparticipants))
 #true_tau_i = rand(Normal(0, true_sd), nparticipants)
 
 #' The data will be saved in wide format: Each participant's data corresponds to a row, and
 #' each column is a data point.
 
-ndata = 10
+ndata = 5
 data = zeros(nparticipants, ndata)
 param = true_tau .* true_tau_i
 #param = true_tau .+ true_tau_i
@@ -88,8 +88,8 @@ end
 #' script with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
 #posterior = sample(mod(data), NUTS(100, 0.65; init_ϵ=0.1), MCMCThreads(), 500, 4)
-posterior = sample(mod(data), NUTS(100, 0.65), 500);
-posterior_centered = sample(mod_centered(data), NUTS(100, 0.65), 500);
+posterior = sample(mod(data), NUTS(100, 0.65), 1000);
+posterior_centered = sample(mod_centered(data), NUTS(100, 0.65), 1000);
 
 #' ## Evaluating parameter recovery
 #' 

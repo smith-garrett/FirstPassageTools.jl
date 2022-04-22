@@ -705,32 +705,33 @@ div.title {text-align: center;}
 <span class='hljl-n'>nparticipants</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-ni'>25</span><span class='hljl-t'>
 </span><span class='hljl-n'>true_tau</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nfB'>2.5</span><span class='hljl-t'>
 </span><span class='hljl-n'>true_sd</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nfB'>0.25</span><span class='hljl-t'>
-</span><span class='hljl-n'>true_tau_i</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>exp</span><span class='hljl-oB'>.</span><span class='hljl-p'>(</span><span class='hljl-nf'>rand</span><span class='hljl-p'>(</span><span class='hljl-nf'>Normal</span><span class='hljl-p'>(</span><span class='hljl-ni'>0</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>true_sd</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-n'>nparticipants</span><span class='hljl-p'>))</span>
+</span><span class='hljl-n'>true_tau_i</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>exp</span><span class='hljl-oB'>.</span><span class='hljl-p'>(</span><span class='hljl-nf'>rand</span><span class='hljl-p'>(</span><span class='hljl-nf'>Normal</span><span class='hljl-p'>(</span><span class='hljl-ni'>0</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>true_sd</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-n'>nparticipants</span><span class='hljl-p'>))</span><span class='hljl-t'>
+</span><span class='hljl-cs'>#true_tau_i = rand(Normal(0, true_sd), nparticipants)</span>
 </pre>
 
 
 <pre class="output">
 25-element Vector&#123;Float64&#125;:
- 0.6229636777986322
- 0.8693532708245537
- 0.8594793017653664
- 0.8389124006710258
- 1.295408309065762
- 0.7102560092073827
- 1.1240713983777335
- 1.0643457906719707
- 0.9809611357539356
- 1.6499848686586602
+ 1.106496470661925
+ 1.0475945707477443
+ 1.2243669742857612
+ 0.895632648740906
+ 0.8615439909085295
+ 0.8899955382062485
+ 0.9567449491467047
+ 0.6305548025750239
+ 0.9275158619422138
+ 0.7493459971445988
  ⋮
- 0.9794258394592602
- 0.9656747293808965
- 1.4413756463828673
- 0.9168916393475339
- 1.3193909793244658
- 1.001048975942356
- 1.0050990636037183
- 1.3330221218176195
- 1.165418228606007
+ 0.713089739772961
+ 1.3842327566018036
+ 0.7051405336973016
+ 0.8294440806489001
+ 1.2896221114606636
+ 0.9788916522794057
+ 1.0078535241701976
+ 0.918555667035211
+ 1.4805349315699732
 </pre>
 
 
@@ -741,6 +742,7 @@ div.title {text-align: center;}
 <span class='hljl-n'>ndata</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-ni'>10</span><span class='hljl-t'>
 </span><span class='hljl-n'>data</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>zeros</span><span class='hljl-p'>(</span><span class='hljl-n'>nparticipants</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>ndata</span><span class='hljl-p'>)</span><span class='hljl-t'>
 </span><span class='hljl-n'>param</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>true_tau</span><span class='hljl-t'> </span><span class='hljl-oB'>.*</span><span class='hljl-t'> </span><span class='hljl-n'>true_tau_i</span><span class='hljl-t'>
+</span><span class='hljl-cs'>#param = true_tau .+ true_tau_i</span><span class='hljl-t'>
 </span><span class='hljl-k'>for</span><span class='hljl-t'> </span><span class='hljl-n'>i</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-ni'>1</span><span class='hljl-oB'>:</span><span class='hljl-n'>nparticipants</span><span class='hljl-t'>
     </span><span class='hljl-n'>data</span><span class='hljl-p'>[</span><span class='hljl-n'>i</span><span class='hljl-p'>,</span><span class='hljl-oB'>:</span><span class='hljl-p'>]</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>rand</span><span class='hljl-p'>(</span><span class='hljl-nf'>fpdistribution</span><span class='hljl-p'>(</span><span class='hljl-n'>param</span><span class='hljl-p'>[</span><span class='hljl-n'>i</span><span class='hljl-p'>]</span><span class='hljl-oB'>*</span><span class='hljl-n'>T</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>param</span><span class='hljl-p'>[</span><span class='hljl-n'>i</span><span class='hljl-p'>]</span><span class='hljl-oB'>*</span><span class='hljl-n'>A</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>p0</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-n'>ndata</span><span class='hljl-p'>)</span><span class='hljl-t'>
 </span><span class='hljl-k'>end</span>
@@ -753,27 +755,39 @@ div.title {text-align: center;}
 
 
 <pre class='hljl'>
-<span class='hljl-nd'>@model</span><span class='hljl-t'> </span><span class='hljl-k'>function</span><span class='hljl-t'> </span><span class='hljl-nf'>mod</span><span class='hljl-p'>(</span><span class='hljl-n'>y</span><span class='hljl-p'>)</span><span class='hljl-t'>
+<span class='hljl-cs'># Switch to param = exp(tau) + exp(tau_i). This will prevent really small params b/c multiplication. </span><span class='hljl-t'>
+</span><span class='hljl-nd'>@model</span><span class='hljl-t'> </span><span class='hljl-k'>function</span><span class='hljl-t'> </span><span class='hljl-nf'>mod</span><span class='hljl-p'>(</span><span class='hljl-n'>y</span><span class='hljl-p'>)</span><span class='hljl-t'>
     </span><span class='hljl-n'>np</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>nd</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>size</span><span class='hljl-p'>(</span><span class='hljl-n'>y</span><span class='hljl-p'>)</span><span class='hljl-t'>
     </span><span class='hljl-cs'># Priors</span><span class='hljl-t'>
     </span><span class='hljl-cs'># Using the non-centered parameterization for τ</span><span class='hljl-t'>
-    </span><span class='hljl-cs'>#τ ~ Normal()</span><span class='hljl-t'>
-    </span><span class='hljl-cs'>#τ̂ = 1 + 0.1*τ  # Corresponds to Normal(1, 0.1)</span><span class='hljl-t'>
-    </span><span class='hljl-n'>τ</span><span class='hljl-t'> </span><span class='hljl-oB'>~</span><span class='hljl-t'> </span><span class='hljl-nf'>Normal</span><span class='hljl-p'>(</span><span class='hljl-ni'>1</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>0.1</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-n'>τ</span><span class='hljl-t'> </span><span class='hljl-oB'>~</span><span class='hljl-t'> </span><span class='hljl-nf'>Normal</span><span class='hljl-p'>()</span><span class='hljl-t'>
+    </span><span class='hljl-n'>τ̂</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-ni'>1</span><span class='hljl-t'> </span><span class='hljl-oB'>+</span><span class='hljl-t'> </span><span class='hljl-nfB'>0.1</span><span class='hljl-oB'>*</span><span class='hljl-n'>τ</span><span class='hljl-t'>  </span><span class='hljl-cs'># Corresponds to Normal(1, 0.1)</span><span class='hljl-t'>
     </span><span class='hljl-n'>sd</span><span class='hljl-t'> </span><span class='hljl-oB'>~</span><span class='hljl-t'> </span><span class='hljl-nf'>Exponential</span><span class='hljl-p'>(</span><span class='hljl-nfB'>0.25</span><span class='hljl-p'>)</span><span class='hljl-t'>
     </span><span class='hljl-n'>τᵢ</span><span class='hljl-t'> </span><span class='hljl-oB'>~</span><span class='hljl-t'> </span><span class='hljl-nf'>filldist</span><span class='hljl-p'>(</span><span class='hljl-nf'>Normal</span><span class='hljl-p'>(),</span><span class='hljl-t'> </span><span class='hljl-n'>np</span><span class='hljl-p'>)</span><span class='hljl-t'>
     </span><span class='hljl-n'>τ̂ᵢ</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>sd</span><span class='hljl-oB'>.*</span><span class='hljl-n'>τᵢ</span><span class='hljl-t'>  </span><span class='hljl-cs'># Corresponds to MvNormal(0, sd)</span><span class='hljl-t'>
     </span><span class='hljl-cs'># Likelihood</span><span class='hljl-t'>
-    </span><span class='hljl-cs'>#mult = exp.(τ̂ .+ τ̂ᵢ)</span><span class='hljl-t'>
-    </span><span class='hljl-n'>mult</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>exp</span><span class='hljl-oB'>.</span><span class='hljl-p'>(</span><span class='hljl-n'>τ</span><span class='hljl-t'> </span><span class='hljl-oB'>.*</span><span class='hljl-t'> </span><span class='hljl-n'>τ̂ᵢ</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-n'>mult</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>exp</span><span class='hljl-oB'>.</span><span class='hljl-p'>(</span><span class='hljl-n'>τ̂</span><span class='hljl-t'> </span><span class='hljl-oB'>.+</span><span class='hljl-t'> </span><span class='hljl-n'>τ̂ᵢ</span><span class='hljl-p'>)</span><span class='hljl-t'>
     </span><span class='hljl-n'>y</span><span class='hljl-t'> </span><span class='hljl-oB'>~</span><span class='hljl-t'> </span><span class='hljl-nf'>filldist</span><span class='hljl-p'>(</span><span class='hljl-nf'>arraydist</span><span class='hljl-p'>([</span><span class='hljl-nf'>fpdistribution</span><span class='hljl-p'>(</span><span class='hljl-n'>mult</span><span class='hljl-p'>[</span><span class='hljl-n'>p</span><span class='hljl-p'>]</span><span class='hljl-oB'>*</span><span class='hljl-n'>T</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>mult</span><span class='hljl-p'>[</span><span class='hljl-n'>p</span><span class='hljl-p'>]</span><span class='hljl-oB'>*</span><span class='hljl-n'>A</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>p0</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-k'>for</span><span class='hljl-t'> </span><span class='hljl-n'>p</span><span class='hljl-t'> </span><span class='hljl-kp'>in</span><span class='hljl-t'> </span><span class='hljl-ni'>1</span><span class='hljl-oB'>:</span><span class='hljl-n'>np</span><span class='hljl-p'>]),</span><span class='hljl-t'> </span><span class='hljl-n'>nd</span><span class='hljl-p'>)</span><span class='hljl-t'>
     </span><span class='hljl-k'>return</span><span class='hljl-t'> </span><span class='hljl-n'>τ̂</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>τ̂ᵢ</span><span class='hljl-t'>
+    </span><span class='hljl-cs'>#return τ̂ᵢ</span><span class='hljl-t'>
+</span><span class='hljl-k'>end</span><span class='hljl-t'>
+
+</span><span class='hljl-nd'>@model</span><span class='hljl-t'> </span><span class='hljl-k'>function</span><span class='hljl-t'> </span><span class='hljl-nf'>mod_centered</span><span class='hljl-p'>(</span><span class='hljl-n'>y</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-n'>np</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>nd</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>size</span><span class='hljl-p'>(</span><span class='hljl-n'>y</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-cs'># Priors</span><span class='hljl-t'>
+    </span><span class='hljl-cs'># Using the centered parameterization for τ</span><span class='hljl-t'>
+    </span><span class='hljl-n'>τ</span><span class='hljl-t'> </span><span class='hljl-oB'>~</span><span class='hljl-t'> </span><span class='hljl-nf'>Normal</span><span class='hljl-p'>(</span><span class='hljl-ni'>1</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>0.1</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-n'>sd</span><span class='hljl-t'> </span><span class='hljl-oB'>~</span><span class='hljl-t'> </span><span class='hljl-nf'>Exponential</span><span class='hljl-p'>(</span><span class='hljl-nfB'>0.25</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-n'>τᵢ</span><span class='hljl-t'> </span><span class='hljl-oB'>~</span><span class='hljl-t'> </span><span class='hljl-nf'>filldist</span><span class='hljl-p'>(</span><span class='hljl-nf'>Normal</span><span class='hljl-p'>(</span><span class='hljl-ni'>0</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>sd</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-n'>np</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-cs'># Likelihood</span><span class='hljl-t'>
+    </span><span class='hljl-n'>mult</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>exp</span><span class='hljl-oB'>.</span><span class='hljl-p'>(</span><span class='hljl-n'>τ</span><span class='hljl-t'> </span><span class='hljl-oB'>.+</span><span class='hljl-t'> </span><span class='hljl-n'>τᵢ</span><span class='hljl-p'>)</span><span class='hljl-t'>
+    </span><span class='hljl-n'>y</span><span class='hljl-t'> </span><span class='hljl-oB'>~</span><span class='hljl-t'> </span><span class='hljl-nf'>filldist</span><span class='hljl-p'>(</span><span class='hljl-nf'>arraydist</span><span class='hljl-p'>([</span><span class='hljl-nf'>fpdistribution</span><span class='hljl-p'>(</span><span class='hljl-n'>mult</span><span class='hljl-p'>[</span><span class='hljl-n'>p</span><span class='hljl-p'>]</span><span class='hljl-oB'>*</span><span class='hljl-n'>T</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>mult</span><span class='hljl-p'>[</span><span class='hljl-n'>p</span><span class='hljl-p'>]</span><span class='hljl-oB'>*</span><span class='hljl-n'>A</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>p0</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-k'>for</span><span class='hljl-t'> </span><span class='hljl-n'>p</span><span class='hljl-t'> </span><span class='hljl-kp'>in</span><span class='hljl-t'> </span><span class='hljl-ni'>1</span><span class='hljl-oB'>:</span><span class='hljl-n'>np</span><span class='hljl-p'>]),</span><span class='hljl-t'> </span><span class='hljl-n'>nd</span><span class='hljl-p'>)</span><span class='hljl-t'>
 </span><span class='hljl-k'>end</span>
 </pre>
 
 
 <pre class="output">
-mod &#40;generic function with 2 methods&#41;
+mod_centered &#40;generic function with 2 methods&#41;
 </pre>
 
 
@@ -782,63 +796,14 @@ mod &#40;generic function with 2 methods&#41;
 
 
 <pre class='hljl'>
-<span class='hljl-n'>posterior</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>sample</span><span class='hljl-p'>(</span><span class='hljl-nf'>mod</span><span class='hljl-p'>(</span><span class='hljl-n'>data</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-nf'>NUTS</span><span class='hljl-p'>(</span><span class='hljl-ni'>100</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>0.65</span><span class='hljl-p'>;</span><span class='hljl-t'> </span><span class='hljl-n'>init_ϵ</span><span class='hljl-oB'>=</span><span class='hljl-nfB'>0.1</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-nf'>MCMCThreads</span><span class='hljl-p'>(),</span><span class='hljl-t'> </span><span class='hljl-ni'>500</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>4</span><span class='hljl-p'>)</span>
+<span class='hljl-cs'>#posterior = sample(mod(data), NUTS(100, 0.65; init_ϵ=0.1), MCMCThreads(), 500, 4)</span><span class='hljl-t'>
+</span><span class='hljl-n'>posterior</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>sample</span><span class='hljl-p'>(</span><span class='hljl-nf'>mod</span><span class='hljl-p'>(</span><span class='hljl-n'>data</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-nf'>NUTS</span><span class='hljl-p'>(</span><span class='hljl-ni'>100</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>0.65</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-ni'>1000</span><span class='hljl-p'>);</span><span class='hljl-t'>
+</span><span class='hljl-n'>posterior_centered</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>sample</span><span class='hljl-p'>(</span><span class='hljl-nf'>mod_centered</span><span class='hljl-p'>(</span><span class='hljl-n'>data</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-nf'>NUTS</span><span class='hljl-p'>(</span><span class='hljl-ni'>100</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-nfB'>0.65</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-ni'>1000</span><span class='hljl-p'>);</span>
 </pre>
 
 
 <pre class="julia-error">
-ERROR: TaskFailedException
-
-    nested task error: TaskFailedException
-    
-        nested task error: UndefVarError: τ̂ not defined
-        Stacktrace:
-          &#91;1&#93; macro expansion
-            @ ~/.julia/packages/DynamicPPL/e6mZw/src/compiler.jl:531 &#91;inlined&#93;
-          &#91;2&#93; mod&#40;__model__::DynamicPPL.Model&#123;typeof&#40;Main.##WeaveSandBox#291.mod&#41;, &#40;:y,&#41;, &#40;&#41;, &#40;&#41;, Tuple&#123;Matrix&#123;Float64&#125;&#125;, Tuple&#123;&#125;, DynamicPPL.DefaultContext&#125;, __varinfo__::DynamicPPL.ThreadSafeVarInfo&#123;DynamicPPL.UntypedVarInfo&#123;DynamicPPL.Metadata&#123;Dict&#123;AbstractPPL.VarName, Int64&#125;, Vector&#123;Distributions.Distribution&#125;, Vector&#123;AbstractPPL.VarName&#125;, Vector&#123;Real&#125;, Vector&#123;Set&#123;DynamicPPL.Selector&#125;&#125;&#125;, Float64&#125;, Vector&#123;Base.RefValue&#123;Float64&#125;&#125;&#125;, __context__::DynamicPPL.SamplingContext&#123;DynamicPPL.SampleFromUniform, DynamicPPL.DefaultContext, Random._GLOBAL_RNG&#125;, y::Matrix&#123;Float64&#125;&#41;
-            @ Main.##WeaveSandBox#291 ~/.julia/dev/FirstPassageTools.jl/notebooks/HierarchicalParameterRecovery.jl:16
-          &#91;3&#93; macro expansion
-            @ ~/.julia/packages/DynamicPPL/e6mZw/src/model.jl:493 &#91;inlined&#93;
-          &#91;4&#93; _evaluate&#33;&#33;
-            @ ~/.julia/packages/DynamicPPL/e6mZw/src/model.jl:476 &#91;inlined&#93;
-          &#91;5&#93; evaluate_threadsafe&#33;&#33;
-            @ ~/.julia/packages/DynamicPPL/e6mZw/src/model.jl:467 &#91;inlined&#93;
-          &#91;6&#93; evaluate&#33;&#33;
-            @ ~/.julia/packages/DynamicPPL/e6mZw/src/model.jl:402 &#91;inlined&#93;
-          &#91;7&#93; evaluate&#33;&#33;
-            @ ~/.julia/packages/DynamicPPL/e6mZw/src/model.jl:415 &#91;inlined&#93;
-          &#91;8&#93; Model
-            @ ~/.julia/packages/DynamicPPL/e6mZw/src/model.jl:375 &#91;inlined&#93;
-          &#91;9&#93; DynamicPPL.VarInfo&#40;rng::Random._GLOBAL_RNG, model::DynamicPPL.Model&#123;typeof&#40;Main.##WeaveSandBox#291.mod&#41;, &#40;:y,&#41;, &#40;&#41;, &#40;&#41;, Tuple&#123;Matrix&#123;Float64&#125;&#125;, Tuple&#123;&#125;, DynamicPPL.DefaultContext&#125;, sampler::DynamicPPL.SampleFromUniform, context::DynamicPPL.DefaultContext&#41;
-            @ DynamicPPL ~/.julia/packages/DynamicPPL/e6mZw/src/varinfo.jl:127
-         &#91;10&#93; VarInfo
-            @ ~/.julia/packages/DynamicPPL/e6mZw/src/varinfo.jl:126 &#91;inlined&#93;
-         &#91;11&#93; step&#40;rng::Random._GLOBAL_RNG, model::DynamicPPL.Model&#123;typeof&#40;Main.##WeaveSandBox#291.mod&#41;, &#40;:y,&#41;, &#40;&#41;, &#40;&#41;, Tuple&#123;Matrix&#123;Float64&#125;&#125;, Tuple&#123;&#125;, DynamicPPL.DefaultContext&#125;, spl::DynamicPPL.Sampler&#123;Turing.Inference.NUTS&#123;Turing.Essential.ZygoteAD, &#40;&#41;, AdvancedHMC.DiagEuclideanMetric&#125;&#125;; resume_from::Nothing, init_params::Nothing, kwargs::Base.Pairs&#123;Symbol, Int64, Tuple&#123;Symbol&#125;, NamedTuple&#123;&#40;:nadapts,&#41;, Tuple&#123;Int64&#125;&#125;&#125;&#41;
-            @ DynamicPPL ~/.julia/packages/DynamicPPL/e6mZw/src/sampler.jl:86
-         &#91;12&#93; macro expansion
-            @ ~/.julia/packages/AbstractMCMC/0eT8o/src/sample.jl:120 &#91;inlined&#93;
-         &#91;13&#93; macro expansion
-            @ ~/.julia/packages/AbstractMCMC/0eT8o/src/logging.jl:16 &#91;inlined&#93;
-         &#91;14&#93; mcmcsample&#40;rng::Random._GLOBAL_RNG, model::DynamicPPL.Model&#123;typeof&#40;Main.##WeaveSandBox#291.mod&#41;, &#40;:y,&#41;, &#40;&#41;, &#40;&#41;, Tuple&#123;Matrix&#123;Float64&#125;&#125;, Tuple&#123;&#125;, DynamicPPL.DefaultContext&#125;, sampler::DynamicPPL.Sampler&#123;Turing.Inference.NUTS&#123;Turing.Essential.ZygoteAD, &#40;&#41;, AdvancedHMC.DiagEuclideanMetric&#125;&#125;, N::Int64; progress::Bool, progressname::String, callback::Nothing, discard_initial::Int64, thinning::Int64, chain_type::Type, kwargs::Base.Pairs&#123;Symbol, Union&#123;Nothing, Int64&#125;, Tuple&#123;Symbol, Symbol&#125;, NamedTuple&#123;&#40;:nadapts, :init_params&#41;, Tuple&#123;Int64, Nothing&#125;&#125;&#125;&#41;
-            @ AbstractMCMC ~/.julia/packages/AbstractMCMC/0eT8o/src/sample.jl:111
-         &#91;15&#93; #sample#42
-            @ ~/.julia/packages/Turing/uMoX1/src/inference/hmc.jl:133 &#91;inlined&#93;
-         &#91;16&#93; macro expansion
-            @ ~/.julia/packages/AbstractMCMC/0eT8o/src/sample.jl:365 &#91;inlined&#93;
-         &#91;17&#93; &#40;::AbstractMCMC.var&quot;#36#49&quot;&#123;DynamicPPL.Sampler&#123;Turing.Inference.NUTS&#123;Turing.Essential.ZygoteAD, &#40;&#41;, AdvancedHMC.DiagEuclideanMetric&#125;&#125;, DynamicPPL.Model&#123;typeof&#40;Main.##WeaveSandBox#291.mod&#41;, &#40;:y,&#41;, &#40;&#41;, &#40;&#41;, Tuple&#123;Matrix&#123;Float64&#125;&#125;, Tuple&#123;&#125;, DynamicPPL.DefaultContext&#125;, Random._GLOBAL_RNG, UnitRange&#123;Int64&#125;, Bool, Base.Pairs&#123;Symbol, UnionAll, Tuple&#123;Symbol&#125;, NamedTuple&#123;&#40;:chain_type,&#41;, Tuple&#123;UnionAll&#125;&#125;&#125;, Int64, Vector&#123;Any&#125;, Nothing, Vector&#123;UInt64&#125;&#125;&#41;&#40;&#41;
-            @ AbstractMCMC ./threadingconstructs.jl:178
-    
-    ...and 3 more exceptions.
-    
-    Stacktrace:
-     &#91;1&#93; sync_end&#40;c::Channel&#123;Any&#125;&#41;
-       @ Base ./task.jl:381
-     &#91;2&#93; macro expansion
-       @ ./task.jl:400 &#91;inlined&#93;
-     &#91;3&#93; macro expansion
-       @ ~/.julia/packages/AbstractMCMC/0eT8o/src/sample.jl:344 &#91;inlined&#93;
-     &#91;4&#93; &#40;::AbstractMCMC.var&quot;#35#48&quot;&#123;Bool, Base.Pairs&#123;Symbol, UnionAll, Tuple&#123;Symbol&#125;, NamedTuple&#123;&#40;:chain_type,&#41;, Tuple&#123;UnionAll&#125;&#125;&#125;, Int64, Int64, Vector&#123;Any&#125;, Nothing, Vector&#123;UInt64&#125;, Vector&#123;DynamicPPL.Sampler&#123;Turing.Inference.NUTS&#123;Turing.Essential.ZygoteAD, &#40;&#41;, AdvancedHMC.DiagEuclideanMetric&#125;&#125;&#125;, Vector&#123;DynamicPPL.Model&#123;typeof&#40;Main.##WeaveSandBox#291.mod&#41;, &#40;:y,&#41;, &#40;&#41;, &#40;&#41;, Tuple&#123;Matrix&#123;Float64&#125;&#125;, Tuple&#123;&#125;, DynamicPPL.DefaultContext&#125;&#125;, Vector&#123;Random._GLOBAL_RNG&#125;, Int64, Int64&#125;&#41;&#40;&#41;
-       @ AbstractMCMC ./task.jl:423
+ERROR: InterruptException:
 </pre>
 
 
@@ -853,6 +818,19 @@ ERROR: TaskFailedException
 
 <pre class="julia-error">
 ERROR: UndefVarError: posterior not defined
+</pre>
+
+
+<p>And the centered version:</p>
+
+
+<pre class='hljl'>
+<span class='hljl-n'>posterior_centered</span>
+</pre>
+
+
+<pre class="julia-error">
+ERROR: UndefVarError: posterior_centered not defined
 </pre>
 
 
@@ -927,7 +905,7 @@ ERROR: UndefVarError: posterior not defined
         <div class="footer">
           <p>
             Published from <a href="HierarchicalParameterRecovery.jl">HierarchicalParameterRecovery.jl</a>
-            using <a href="http://github.com/JunoLab/Weave.jl">Weave.jl</a> v0.10.10 on 2022-04-21.
+            using <a href="http://github.com/JunoLab/Weave.jl">Weave.jl</a> v0.10.10 on 2022-04-22.
           </p>
         </div>
       </div>
