@@ -52,6 +52,10 @@ Distributions.logpdf(d::fpdistribution, t::Real) = begin
     log(pdf(d, t))
 end
 
+Distributions.logpdf(d::fpdistribution, t::AbstractVector) = begin
+    sum(log.(pdf(d, x) for x in t))
+end
+
 Distributions.logpdf(d::fpdistribution, t::Real, dims) = begin
     log.(pdf(d, t, dims))
 end
