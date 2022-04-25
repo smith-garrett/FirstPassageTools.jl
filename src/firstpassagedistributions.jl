@@ -82,7 +82,8 @@ Distributions.quantile(d::fpdistribution, p) = begin
     elseif p >= one(p)
         return Inf
     else
-        find_zero((x -> cdf(d, x) - p), p)
+        #find_zero((x -> cdf(d, x) - p), p)
+        find_zero((x -> cdf(d, x) - p), mean(d))
     end
 end
 
