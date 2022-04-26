@@ -15,6 +15,7 @@ A Poisson processes can be thought of as a stochastic process that increments a 
 variable (taking integer values) at random times. The increments are assumed to be
 exponentially distributed. The master equation, which describes the change in probability of
 being in a state $n$ at time $t$, is:
+
 ```math
 \dot{p}_n(t) = q(p_{n-t} - p_n)
 ```
@@ -30,6 +31,7 @@ or leave.
 We assume that $\dot{p}_0 = -qp_0$ and that $\dot{p}_{10} = qp_9$, which creates a system of
 coupled differential equations. To solve these, we define the initial probability
 distribution over states to be 
+
 ```julia
 p0 = zeros(9)
 p0[1] = 1.0
@@ -42,12 +44,14 @@ absorbing, $p_n, n\in [1, \dots, 9]$.
 As shown in, e.g., van Kampen (2007, *Stochastic processes in physics and chemistry*, Ch.
 12), the solution for the probability distribution of the time to reach state $n = 10$ given
 that the system started at $n = 0$ is
+
 ```math
 p(t) = \mathbf{A}\exp\left(\mathbf{T}t\right)\mathbf{p}(0)
 ```
 where $\mathbf{p}(0)$ is a column vector of initial probability distribution over states defined above,
 $\mathbf{T}$ is the matrix of transition rates between transient states, and $\mathbf{A}$ is
 the matrix of transition rates from the transient states into the absorbing state:
+
 ```julia, echo=false
 T = zeros(9, 9)
 T[diagind(T)] .= -1.0
@@ -90,6 +94,7 @@ using FirstPassageTools
 
 We will assume that $q = 7.5$ transitions per second is the true value that generates the
 data. We can now set up the first-passage time distribution:
+
 ```julia; cache=true; echo=false;
 true_q = 7.5
 fp = fpdistribution(true_q*T, true_q*A, p0)
@@ -106,13 +111,14 @@ plot!(fp, label="True density")
 
 We will assume the following model (priors and likelihood):
 ```julia
-@model function mod(y)
+@model function mod(y, T=T, A=A, p0=p0)
     # Set prior on q
     q ~ truncated(Normal(5, 1), 0.001, Inf)
     # Likelihood
     y ~ filldist(fpdistribution(q*T, q*A, p0), length(y))
 end
 ```
+
 We assume a truncated normal distribution (SD = 5) for $q$. The data are distributed
 according to the first-passage time distribution defined above, but rescaled by $q$.
 
@@ -123,6 +129,7 @@ posterior = sample(mod(data), NUTS(500, 0.65), MCMCThreads(), 1000, 4)
 ```
 
 Let's have a look at the trace plot and the posterior density of $q$:
+
 ```julia; echo=false; out_width="75%"
 plt = plot(posterior)
 vline!(plt[2], [true_q])

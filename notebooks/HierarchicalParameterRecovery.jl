@@ -55,7 +55,7 @@ end
 #' sampling was biased in the centered parameterization.
 
 # Switch to param = exp(tau) + exp(tau_i). This will prevent really small params b/c multiplication. 
-@model function mod(y)
+@model function mod(y, Tmat=T, Amat=A, p0vec=p0)
     np, nd = size(y)
     # Priors
     # Using the non-centered parameterization for τ
@@ -66,7 +66,7 @@ end
     τ̂ᵢ = sd .* τᵢ  # Corresponds to MvNormal(0, sd)
     # Likelihood
     mult = exp.(τ̂ .+ τ̂ᵢ)
-    y ~ filldist(arraydist([fpdistribution(mult[p]*T, mult[p]*A, p0) for p in 1:np]), nd)
+    y ~ filldist(arraydist([fpdistribution(mult[p]*Tmat, mult[p]*Amat, p0vec) for p in 1:np]), nd)
     return τ̂, τ̂ᵢ, mult
 end
 
