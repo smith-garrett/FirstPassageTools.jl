@@ -27,8 +27,11 @@ second determines the transition rates from the transient states to one or more 
 states. The rows of the transient matrix T should sum to the values given in the absorbing
 matrix.
 
-(Currently, only the exit-time distribution is implemented, the probability of
-reaching any absorbing state by time t.)
+Currently, the most complete functionality is available for the exit-time distribution, the
+probability of reaching any absorbing state by time t. When a system has more than one
+absorbing state, one might be interested in the conditional first-passage time to reach one
+absorbing state before all others. Some methods are implemented for this, but not
+everything.
 
 For a single transient state and a single absorbing state, the first-passage time
 distribution is equivalent to the exponential distribution:
@@ -41,7 +44,9 @@ distribution is equivalent to the exponential distribution:
 > fp = fpdistribution(T, A, p0)
 ```
 
-From here, the distribution can be fit to data. Tutorials are coming soon!
+From here, the distribution can be fit to data. See the notebooks directory for additional
+tutorials and parameter recovery exercises.
 
 Available methods for first-passage time distributions include `mean()`, `var()`, `rand()`,
 `pdf()`, `logpdf()`, `cdf()`, and `quantile()`.
+
