@@ -1,11 +1,4 @@
 # utilities.jl
-# Tested with Julia 1.6 on macOS 11.6.4
-
-# Notes:
-# 1. make sure that the p0 stored in the structure has the same number of dimensions as the
-#    transient matrix
-
-# To do: fix rescale!() fn. to work for both square (W and T) and non-square (A) matrices
 
 using LinearAlgebra
 using CSV
@@ -21,10 +14,8 @@ The .csv file should have the column names "condition", "from", and "to". Curren
 transition rates are set to be equal to the number of states in each condition. This keeps
 the processing times comparable between conditions, and when fitting the scaling parameter
 τ, that τ represents the transition rate per jump.
-
-TO DO: return state names, separated by transient/absorbing.
 """
-function setup(path::String)#; return_names=false)
+function setup(path::String)
     df = CSV.read(path, DataFrame, stringtype=String)
     @assert names(df) == ["from", "to"] "Incorrect column names in .csv file."
 

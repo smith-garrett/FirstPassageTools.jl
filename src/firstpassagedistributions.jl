@@ -1,11 +1,19 @@
 # firstpassagedistributions.jl
-# Tested with Julia 1.6 on macOS 11.6.4
 
 using LinearAlgebra
 using Distributions
 using Roots  # needed for numerically finding quantiles
 
-# Creating new methods for getting a first passage time distributions
+"""
+    fpdistribution(T, A, p0)
+
+Creates a new first-passage time distribution from the transient transition rate matrix T,
+the absorbing transition rate matrix A, and the vector of initial probabilities of the
+transient states p0.
+
+Checks to make sure that the inputs meet the requirements for being a first passage time
+distribution for a continuous-time, discrete-state Markov process.
+"""
 struct fpdistribution{T1, T2} <: ContinuousUnivariateDistribution
     T::T1  # transient matrix
     A::T1  # absorbing matrix
@@ -16,7 +24,8 @@ struct fpdistribution{T1, T2} <: ContinuousUnivariateDistribution
     fpdistribution(T::T1, A::T1, p0::T2) where {T1, T2} = begin
         # At least one column of T sum to be less than zero
         @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect:\n$T\n"
-        # Definition of A: BUT ONLY FOR SYSTEMS WITH A SINGLE ABSORBING STATE!
+        # Checks to make sure that the total exit rate from T is equal to the total rate of
+        # entry into A
         @assert isapprox(vec(-ones(1, size(T, 1)) * T), vec(A'*ones(size(A, 1)))) "Absorbing matrix A incorrect"
         # Size of p0 should correspond to the number of transient states
         @assert size(p0, 1) == size(T, 1) == size(A, 2) "Dimension mismatch with T, A, and/or p0"
@@ -33,7 +42,11 @@ Distributions.maximum(d::fpdistribution) = +Inf
 Distributions.mean(d::fpdistribution) = -sum(inv(d.T) * d.p0)
 Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 
-# Probability density and cumulative density functions
+"""
+    pdf(d::fpdistribution, t::Real)
+
+Return the probability density function of d evaluated at the value t.
+"""
 Distributions.pdf(d::fpdistribution, t::Real) = begin
     ifelse(t >= zero(t), sum(d.A * exp(t * d.T) * d.p0), zero(t))
 end
@@ -48,18 +61,39 @@ Distributions.pdf(d::fpdistribution, t::Real, dims) = begin
     ifelse(t >= zero(t), getindex(d.A * exp(t * d.T) * d.p0 ./ splittingprobabilities(d), dims), zero(t))
 end
 
+"""
+    logpdf(d::fpdistribution, t::Real)
+
+Returns the log probability density of `d` evaluated at `t`.
+"""
 Distributions.logpdf(d::fpdistribution, t::Real) = begin
     log(pdf(d, t))
 end
 
+"""
+    logpdf(d::fpdistribution, t::Real)
+
+Returns the sum of the log probability densities of `d` evaluated at each value in `t`.
+"""
 Distributions.logpdf(d::fpdistribution, t::AbstractVector) = begin
     sum(log.(pdf(d, x) for x in t))
 end
 
+"""
+    logpdf(d::fpdistribution, t::Real)
+
+Returns the log probability density of `d` evaluated at `t` for the absorbing dimensions in
+`dims`.
+"""
 Distributions.logpdf(d::fpdistribution, t::Real, dims) = begin
     log.(pdf(d, t, dims))
 end
 
+"""
+    cdf(d::fpdistribution, t::Real)
+
+Returns the cumulative distribution function of `d` evaluated at `t`.
+"""
 Distributions.cdf(d::fpdistribution, t::Real) = begin
     ifelse(t >= zero(t), 1 - sum(exp(t * d.T) * d.p0), zero(t))
 end
@@ -100,9 +134,6 @@ end
 
 Compute the splitting probabilities, i.e., the probabilities of being absorbed into each of
 the absorbing states.
-
-Currently not very useful, because only exit times (unconditional first-passage tmes) are
-implemented
 """
 function splittingprobabilities(d::fpdistribution)
     return -d.A * inv(d.T) * d.p0
