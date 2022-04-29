@@ -3,7 +3,6 @@
 using LinearAlgebra
 using Distributions
 using Roots  # needed for numerically finding quantiles
-using ExponentialAction  # For fast, differentiable matrix exponential action
 
 """
     fpdistribution(T, A, p0)
@@ -49,8 +48,7 @@ Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 Return the probability density function of d evaluated at the value t.
 """
 Distributions.pdf(d::fpdistribution, t::Real) = begin
-    #ifelse(t >= zero(t), sum(d.A * exp(t * d.T) * d.p0), zero(t))
-    ifelse(t >= zero(t), sum(d.A * expv(t, d.T, d.p0)), zero(t))
+    ifelse(t >= zero(t), sum(d.A * exp(t * d.T) * d.p0), zero(t))
 end
 
 """
@@ -60,8 +58,7 @@ Return the conditional probability density at `t` for the absorbing dimensions g
 `dims`.
 """
 Distributions.pdf(d::fpdistribution, t::Real, dims) = begin
-    #ifelse(t >= zero(t), getindex(d.A * exp(t * d.T) * d.p0 ./ splittingprobabilities(d), dims), zero(t))
-    ifelse(t >= zero(t), getindex(d.A * expv(t, d.T, d.p0) ./ splittingprobabilities(d), dims), zero(t))
+    ifelse(t >= zero(t), getindex(d.A * exp(t * d.T) * d.p0 ./ splittingprobabilities(d), dims), zero(t))
 end
 
 """
@@ -98,8 +95,7 @@ end
 Returns the cumulative distribution function of `d` evaluated at `t`.
 """
 Distributions.cdf(d::fpdistribution, t::Real) = begin
-    #ifelse(t >= zero(t), 1 - sum(exp(t * d.T) * d.p0), zero(t))
-    ifelse(t >= zero(t), 1 - sum(expv(t, d.T, d.p0)), zero(t))
+    ifelse(t >= zero(t), 1 - sum(exp(t * d.T) * d.p0), zero(t))
 end
 
 Distributions.cdf(d::fpdistribution, t::Real, dims) = begin
