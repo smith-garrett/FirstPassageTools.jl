@@ -5,6 +5,7 @@ tags:
   - Julia
   - Stochastic processes
   - Markov processes
+  - First-passage time problems
 authors:
   - name: Garrett Smith
     orcid: 0000-0001-7238-3942
@@ -77,6 +78,8 @@ conditional on not being absorbed in another state).
 
 I would like to thank Prof. Dr. Shravan Vasishth, members of the Vasishth lab at the
 University of Potsdam, and the audience and reviewers of 54th Annual Meeting of the Society
-for Mathematical Psychology for helpful feedback.
+for Mathematical Psychology for helpful feedback. This work was partially funded by the
+Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) – Project ID 317633480
+– SFB 1287
 
 # References
