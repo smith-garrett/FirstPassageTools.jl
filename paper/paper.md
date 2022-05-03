@@ -1,6 +1,6 @@
 ---
-title: FirstPassageTools.jl: A Julia package for first-passage time problems for
-continous-time, discrete-state Markov processes.
+title: "FirstPassageTools.jl: A Julia package for first-passage time problems for
+continous-time, discrete-state Markov processes."
 tags:
   - Julia
   - Stochastic processes
