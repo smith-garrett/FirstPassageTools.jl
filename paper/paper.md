@@ -74,6 +74,9 @@ absorbing state given an initial state) and conditional first-passsage time dens
 probability density for how long it takes to be absorbed in a particular absorbing state
 conditional on not being absorbed in another state).
 
+Some examples of how to set up, sample, and fit first-passage time distributions are
+provided in the `notebooks/` directory of the repository.
+
 # Acknowledgements
 
 I would like to thank Prof. Dr. Shravan Vasishth, members of the Vasishth lab at the
