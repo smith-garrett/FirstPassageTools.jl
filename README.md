@@ -50,5 +50,17 @@ Available methods for first-passage time distributions include `mean()`, `var()`
 distribution can be fit to data. See the notebooks directory for additional tutorials and
 parameter recovery exercises.
 
+Because the first-passage time distributions here are sub-types of the continuous univariate
+distribution from[`Distributions.jl`](https://github.com/JuliaStats/Distributions.jl),
+plotting functions from [`StatsPlots.jl`](https://github.com/JuliaPlots/StatsPlots.jl)
+work out of the box. For example, to plot the probability density function and the
+cumulative distribution function from the above sample, you can run:
+
+```julia
+julia> using Plots, StatsPlots
+julia> plot(fp, label="PDF")
+julia> plot!(fp, func=cdf, label="CDF")
+```
+
 Additional examples are provided in the notebooks directory.
 
