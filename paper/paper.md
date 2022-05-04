@@ -9,10 +9,7 @@ tags:
 authors:
   - name: Garrett Smith
     orcid: 0000-0001-7238-3942
-    affiliation: 1
-affiliations:
- - name: University of Potsdam, Potsdam, Germany
-   index: 1
+    affiliation: University of Potsdam, Potsdam, Germany
 date: 28 April 2022
 bibliography: paper.bib
 
@@ -26,20 +23,23 @@ state. Once the system reaches an absorbing state, it cannot transition out of i
 There are examples of such processes in many scientific fields, for example, radioactive
 decay [@vankampen2007stochastic], biological processes like the passage of molecules through
 a cell membrane [@iyer-biswas2016first], or the transition between products and reactants in
-chemical reactions [@swinburne2020rare]. `FirstPassageTools.jl` is a Julia package for
-sampling from and fitting such first-passage time distributions for continuous-time,
-discrete-state Markov processes. 
+chemical reactions [@swinburne2020rare]. First-passage times have also found use in
+cognitive science: [@diederich2003simple] use discretized continuous-time, continuous-space
+random walks to model perceptual decision making, and [@smith2021software] propose a
+framework for modeling word-by-word reading times using continuous-time, discrete-state
+Markov processes. `FirstPassageTools.jl` is a Julia package for sampling from and fitting
+such first-passage time distributions for continuous-time, discrete-state Markov processes. 
 
 In general, the dynamics of continuous-time, discrete-state Markov processes are governed by
 a transition rate matrix that specifies the rate per unit time that the process can jump
 from one state to another. `FirstPassageTools.jl` focuses on cases where the structure of
 the transition rate matrices (number of states, allowed transitions, etc.) is fixed in
 advance. Transition rate matrices can be read from a .csv file via the `setup()` function,
-or they can be constructed by hand. This makes it possible to fit a first-passage time
-distribution from a hypothesized process to empirical data, and compare the fit to the data
-between alternative generating processes. `FirstPassageTools.jl` builds on the
-well-established `Distributions.jl` and `Turing.jl` packages, making Julia tools for data
-analysis and visualization accessible for a new type of probability distribution.
+or they can be constructed by hand. This makes it possible to fit the transition rates of a
+first-passage time distribution from a hypothesized process to empirical data, and compare
+the fit to the data between alternative generating processes. `FirstPassageTools.jl` builds
+on the well-established `Distributions.jl` and `Turing.jl` packages, making Julia tools for
+data analysis and visualization accessible for a new type of probability distribution.
 
 # Statement of need
 
@@ -60,8 +60,8 @@ parameter estimation as `FirstPassageTools.jl`. They are:
   absorbing boundaries
 - [`PhaseTypeR`](https://rivasiker.github.io/PhaseTypeR/index.html): Simulate and fit
   phase-type distributions in R
-- `DifferentialEquations.jl`: General simulation framework that includes continuous-time jump
-  processes [@rackauckas2017differentialequations].
+- `DifferentialEquations.jl`: General simulation framework that includes continuous-time
+  jump processes [@rackauckas2017differentialequations].
 
 `FirstPassageTools.jl` aims to fill a gap in the existing software landscape for researchers
 seeking to implement, fit, and compare first-passage time models with very few assumptions
@@ -74,8 +74,10 @@ absorbing state given an initial state) and conditional first-passsage time dens
 probability density for how long it takes to be absorbed in a particular absorbing state
 conditional on not being absorbed in another state).
 
-Some examples of how to set up, sample, and fit first-passage time distributions are
-provided in the `notebooks/` directory of the repository.
+Installation instructions and a basic example are provided in the repository's [`README`
+file](https://github.com/garrett-m-smith/FirstPassageTools.jl). Further examples of how to
+set up, sample, and fit first-passage time distributions are provided in the `notebooks`
+directory of the repository.
 
 # Acknowledgements
 

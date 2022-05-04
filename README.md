@@ -9,10 +9,11 @@ then be fit to empirical first-passage time data using [Turing.jl](https://turin
 
 # Installation
 
-Currently, FirstPassageTools.jl can be installed directly from Github:
+Currently, FirstPassageTools.jl can be installed directly from Github in the Julia REPL:
 
 ```julia
-] add https://github.com/garrett-m-smith/FirstPassageTools.jl
+julia> ]
+pkg> add https://github.com/garrett-m-smith/FirstPassageTools.jl
 ```
 
 Soon, it will be available via Julia's central package installation registry.
@@ -21,32 +22,33 @@ Soon, it will be available via Julia's central package installation registry.
 # Usage
 
 To set up a first-passage time distribution, one needs to provide two transition rate
-matrices and a vector with the initial probability distribution over the transient states.
-The first matrix determines the transition rates between transient states of the system. The
-second determines the transition rates from the transient states to one or more absorbing
-states. The rows of the transient matrix T should sum to the values given in the absorbing
-matrix.
+matrices and a vector with the initial probability distribution over the transient states
+(`p0` in the example below). The first matrix (`T` below) determines the transition rates
+between transient states of the system. The second determines the transition rates from the
+transient states to one or more absorbing states (`A` below). The rows of the transient
+matrix T should sum to the values given in the absorbing matrix. For both matrices, the
+$i,j$-th entry should provide the transition rate from state $j$ to state $i$.
 
-Currently, the most complete functionality is available for the exit-time distribution, the
-probability of reaching any absorbing state by time t. When a system has more than one
-absorbing state, one might be interested in the conditional first-passage time to reach one
-absorbing state before all others. Some methods are implemented for this, but not
-everything.
+Currently, the most complete functionality is available for the first-passage time to *any*
+absorbing state by time t. When a system has more than one absorbing state, one might be
+interested in the conditional first-passage time to reach a particular absorbing state
+before all others. Some methods are implemented for this, but not everything.
 
 For a single transient state and a single absorbing state, the first-passage time
 distribution is equivalent to the exponential distribution:
 
 ```julia
-> using FirstPassageTools
-> T = [-1;;]  # transition rate matrices need to be 2-dimensional
-> A = [1;;]
-> p0 = [1]
-> fp = fpdistribution(T, A, p0)
+julia> using FirstPassageTools
+julia> T = [-1.0;;]  # transition rate matrices need to be 2-dimensional
+julia> A = [1.0;;]
+julia> p0 = [1.0]
+julia> fp = fpdistribution(T, A, p0)
 ```
 
-From here, the distribution can be fit to data. See the notebooks directory for additional
-tutorials and parameter recovery exercises.
-
 Available methods for first-passage time distributions include `mean()`, `var()`, `rand()`,
-`pdf()`, `logpdf()`, `cdf()`, and `quantile()`.
+`pdf()`, `logpdf()`, `cdf()`, and `quantile()`. From here, the transition rates of the
+distribution can be fit to data. See the notebooks directory for additional tutorials and
+parameter recovery exercises.
+
+Additional examples are provided in the notebooks directory.
 
