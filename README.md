@@ -2,6 +2,7 @@
 
 [![Build Status](https://github.com/garrett-m-smith/FirstPassageTools.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/garrett-m-smith/FirstPassageTools.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/garrett-m-smith/FirstPassageTools.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/garrett-m-smith/FirstPassageTools.jl)
+[![DOI](https://zenodo.org/badge/465749757.svg)](https://zenodo.org/badge/latestdoi/465749757)
 
 `FirstPassageTools` is a Julia package for setting up first-passage time distributions for
 continuous-time, discrete-state Markov processes. The first-passage time distributions can
