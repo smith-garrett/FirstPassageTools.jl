@@ -63,5 +63,8 @@ julia> plot(fp, label="PDF")
 julia> plot!(fp, func=cdf, label="CDF")
 ```
 
-Additional examples are provided in the notebooks directory.
+Additional examples are provided in the notebooks directory. Verification of correct
+sampling, at least for certain statistical models, is provided in the
+`SimulationBasedCalibration.jl` script in the `notebooks` directory.
+
 
