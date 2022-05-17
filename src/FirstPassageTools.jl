@@ -17,5 +17,6 @@ export logpdf
 export cdf
 export quantile
 export rand
+export quasistationary
 
 end

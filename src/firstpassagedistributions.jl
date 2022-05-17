@@ -138,3 +138,17 @@ the absorbing states.
 function splittingprobabilities(d::fpdistribution)
     return -d.A * inv(d.T) * d.p0
 end
+
+"""
+    quasistationary(d::fpdistribution)
+
+Return the quasi-stationary distribution of the distribution `d`, i.e., the probability
+distribution over transient states conditional on not yet being absorbed.
+"""
+function quasistationary(d::fpdistribution)
+    vals, vecs = eigen(d.T)
+    idx = argmax(vals)
+    vec = vecs[:,idx]
+    return vec / sum(vec)
+end
+

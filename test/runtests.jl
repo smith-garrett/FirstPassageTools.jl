@@ -73,3 +73,13 @@ end
     @test_nowarn pdf.(two_abs, [0.0, 5], 1)
     @test_nowarn pdf.(two_abs, [0.0, 5], [1, 2])
 end
+
+@testset "Test quasi-stationary distribution" begin
+    # Should have a quasi-stationary distribution of [0.5, 0.5]
+    T5050 = [-2.0 1; 1 -2]
+    A5050 = [1.0 1.0]
+    p5050 = [1.0, 0]  # irrelevant for quasi-stationary distribution, but needed to set up fp
+    qs_fp = fpdistribution(T5050, A5050, p5050)
+    @test isapprox(quasistationary(qs_fp), [0.5, 0.5])
+end
+
