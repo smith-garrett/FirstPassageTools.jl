@@ -20,7 +20,6 @@ struct fpdistribution{T1, T2} <: ContinuousUnivariateDistribution
     p0::T2  # initial condition
 
     # Internal constructor function
-    #fpdistribution(T::T1, A::T2, p0::T3) where {T1<:AbstractArray, T2<:AbstractArray, T3<:AbstractVector} = begin
     fpdistribution(T::T1, A::T1, p0::T2) where {T1, T2} = begin
         # At least one column of T sum to be less than zero
         @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect:\n$T\n"
@@ -48,7 +47,7 @@ Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 Return the probability density function of d evaluated at the value t.
 """
 Distributions.pdf(d::fpdistribution, t::Real) = begin
-    ifelse(t >= zero(t), sum(d.A * exp(t * d.T) * d.p0), zero(t))
+    insupport(d, t) ? sum(d.A * exp(t * d.T) * d.p0) : zero(t)
 end
 
 """
@@ -58,7 +57,7 @@ Return the conditional probability density at `t` for the absorbing dimensions g
 `dims`.
 """
 Distributions.pdf(d::fpdistribution, t::Real, dims) = begin
-    ifelse(t >= zero(t), getindex(d.A * exp(t * d.T) * d.p0 ./ splittingprobabilities(d), dims), zero(t))
+    insupport(d, t) ? getindex(d.A * exp(t * d.T) * d.p0 ./ splittingprobabilities(d), dims : zero(t))
 end
 
 """
@@ -95,7 +94,7 @@ end
 Returns the cumulative distribution function of `d` evaluated at `t`.
 """
 Distributions.cdf(d::fpdistribution, t::Real) = begin
-    ifelse(t >= zero(t), 1 - sum(exp(t * d.T) * d.p0), zero(t))
+    insupport(d, t) ? 1 - sum(exp(t * d.T) * d.p0) : zero(t)
 end
 
 Distributions.cdf(d::fpdistribution, t::Real, dims) = begin
@@ -116,7 +115,7 @@ Distributions.quantile(d::fpdistribution, p) = begin
     elseif p >= one(p)
         return Inf
     else
-        #find_zero((x -> cdf(d, x) - p), p)
+        # Use the mean of the distribution as the initial guess
         find_zero((x -> cdf(d, x) - p), mean(d))
     end
 end
