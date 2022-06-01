@@ -57,7 +57,7 @@ Return the conditional probability density at `t` for the absorbing dimensions g
 `dims`.
 """
 Distributions.pdf(d::fpdistribution, t::Real, dims) = begin
-    insupport(d, t) ? getindex(d.A * exp(t * d.T) * d.p0 ./ splittingprobabilities(d), dims : zero(t))
+    insupport(d, t) ? getindex(d.A * exp(t * d.T) * d.p0 ./ splittingprobabilities(d), dims) : zero(t)
 end
 
 """
