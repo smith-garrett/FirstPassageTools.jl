@@ -3,6 +3,7 @@ using Test
 using CSV
 using DataFrames
 using Distributions
+using StaticArrays
 
 T = [-1 1.0; 1 -2]
 A = [0 1.0]
@@ -81,5 +82,13 @@ end
     p5050 = [1.0, 0]  # irrelevant for quasi-stationary distribution, but needed to set up fp
     qs_fp = fpdistribution(T5050, A5050, p5050)
     @test isapprox(quasistationary(qs_fp), [0.5, 0.5])
+end
+
+@testset "Using static arrays" begin
+    Ts = @SArray [-1 1.0; 1 -2]
+    As = @SArray [0 1.0]
+    p0s = @SVector [1.0, 0]
+    @test_nowarn fpdistribution(Ts, As, p0s)
+    @test isapprox(mean(fpdistribution(Ts, As, p0s)), mean(fpdistribution(T, A, p0)))
 end
 

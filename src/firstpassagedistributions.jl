@@ -14,13 +14,13 @@ transient states p0.
 Checks to make sure that the inputs meet the requirements for being a first passage time
 distribution for a continuous-time, discrete-state Markov process.
 """
-struct fpdistribution{T1, T2} <: ContinuousUnivariateDistribution
+struct fpdistribution{T1, T2, T3} <: ContinuousUnivariateDistribution
     T::T1  # transient matrix
-    A::T1  # absorbing matrix
-    p0::T2  # initial condition
+    A::T2  # absorbing matrix
+    p0::T3  # initial condition
 
     # Internal constructor function
-    fpdistribution(T::T1, A::T1, p0::T2) where {T1, T2} = begin
+    fpdistribution(T::T1, A::T2, p0::T3) where {T1, T2, T3} = begin
         # At least one column of T sum to be less than zero
         @assert any(sum(T, dims=1) .< 0) "Transient T matrix incorrect:\n$T\n"
         # Checks to make sure that the total exit rate from T is equal to the total rate of
@@ -30,7 +30,7 @@ struct fpdistribution{T1, T2} <: ContinuousUnivariateDistribution
         @assert size(p0, 1) == size(T, 1) == size(A, 2) "Dimension mismatch with T, A, and/or p0"
         # p0 should be a probability distribution
         @assert isapprox(sum(p0), 1.0) "Initial condition p0 not a probability distribution"
-        new{T1, T2}(T, A, p0)
+        new{T1, T2, T3}(T, A, p0)
     end
 end
 
