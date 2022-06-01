@@ -10,15 +10,19 @@ then be fit to empirical first-passage time data using [Turing.jl](https://turin
 
 # Installation
 
-Currently, FirstPassageTools.jl can be installed directly from Github in the Julia REPL:
+FirstPassageTools.jl can be installed from Juila's central package repository:
+
+```julia
+julia> ]
+pkg> add FirstPassageTools
+```
+
+FirstPassageTools.jl can also be installed directly from Github in the Julia REPL:
 
 ```julia
 julia> ]
 pkg> add https://github.com/garrett-m-smith/FirstPassageTools.jl
 ```
-
-Soon, it will be available via Julia's central package installation registry.
-
 
 # Usage
 
