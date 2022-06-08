@@ -3,7 +3,6 @@
 using LinearAlgebra
 using Distributions
 using Roots  # needed for numerically finding quantiles
-using ExponentialAction
 
 """
     fpdistribution(T, A, p0)
