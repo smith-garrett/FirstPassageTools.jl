@@ -92,3 +92,11 @@ end
     @test isapprox(mean(fpdistribution(Ts, As, p0s)), mean(fpdistribution(T, A, p0)))
 end
 
+@testset "Difficult transition matrix" begin
+    T = 6 * [-2.0 1 0 1 0; 1 -2 1 0 0; 0 1 -1 0 0; 1 0 0 -2 1; 0 0 0 1 -2]
+    A = 6 * [0.0 0 0 0 1]
+    p0 = [1.0, 0, 0, 0, 0]
+    @test pdf(fpdistribution(T, A, p0), eps()) > 0.0
+end
+
+
