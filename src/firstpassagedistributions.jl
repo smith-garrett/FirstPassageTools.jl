@@ -3,7 +3,7 @@
 using LinearAlgebra
 using Distributions
 using Roots  # needed for numerically finding quantiles
-using ExponentialAction  # More numerically stable than built-in exp(::Matrix)
+using ExponentialUtilities  # More numerically stable than built-in exp(::Matrix)
 
 """
     fpdistribution(T, A, p0)
@@ -47,7 +47,7 @@ Distributions.var(d::fpdistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 
 Return the probability density function of d evaluated at the value t.
 """
-Distributions.pdf(d::fpdistribution, t::Real) = begin
+Distributions.pdf(d::fpdistribution, t::T) where T<:Real = begin
     #insupport(d, t) ? sum(d.A * exp(t * d.T) * d.p0) : zero(t)
     insupport(d, t) ? sum(d.A * expv(t, d.T, d.p0)) : zero(t)
 end
@@ -58,7 +58,7 @@ end
 Return the conditional probability density at `t` for the absorbing dimensions given in
 `dims`.
 """
-Distributions.pdf(d::fpdistribution, t::Real, dims) = begin
+Distributions.pdf(d::fpdistribution, t::T, dims) where T<:Real = begin
     #insupport(d, t) ? getindex(d.A * exp(t * d.T) * d.p0 ./ splittingprobabilities(d), dims) : zero(t)
     insupport(d, t) ? getindex(d.A * expv(t, d.T, d.p0) ./ splittingprobabilities(d), dims) : zero(t)
 end
@@ -68,7 +68,7 @@ end
 
 Returns the log probability density of `d` evaluated at `t`.
 """
-Distributions.logpdf(d::fpdistribution, t::Real) = begin
+Distributions.logpdf(d::fpdistribution, t::T) where T<:Real = begin
     log(pdf(d, t))
 end
 
@@ -77,7 +77,7 @@ end
 
 Returns the sum of the log probability densities of `d` evaluated at each value in `t`.
 """
-Distributions.logpdf(d::fpdistribution, t::AbstractVector) = begin
+Distributions.logpdf(d::fpdistribution, t::T) where T<:AbstractVector = begin
     sum(log.(pdf(d, x) for x in t))
 end
 
@@ -87,7 +87,7 @@ end
 Returns the log probability density of `d` evaluated at `t` for the absorbing dimensions in
 `dims`.
 """
-Distributions.logpdf(d::fpdistribution, t::Real, dims) = begin
+Distributions.logpdf(d::fpdistribution, t::T, dims) where T<:Real = begin
     log.(pdf(d, t, dims))
 end
 
@@ -96,11 +96,11 @@ end
 
 Returns the cumulative distribution function of `d` evaluated at `t`.
 """
-Distributions.cdf(d::fpdistribution, t::Real) = begin
+Distributions.cdf(d::fpdistribution, t::T) where T<:Real = begin
     insupport(d, t) ? 1 - sum(expv(t, d.T, d.p0)) : zero(t)
 end
 
-Distributions.cdf(d::fpdistribution, t::Real, dims) = begin
+Distributions.cdf(d::fpdistribution, t::T, dims) where T<:Real = begin
     error("cdf not implemented for multiple absorbing states.")
 end
 
