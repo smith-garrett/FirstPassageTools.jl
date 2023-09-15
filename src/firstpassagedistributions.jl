@@ -2,6 +2,7 @@
 
 using LinearAlgebra
 using Distributions
+import Distributions: pdf, logpdf, cdf, minimum, maximum, mean, var, @distr_support
 using Roots  # needed for numerically finding quantiles
 using ExponentialUtilities  # More numerically stable than built-in exp(::Matrix)
 
@@ -64,7 +65,7 @@ Distributions.pdf(d::fpdistribution, t::T, dims) where T<:Real = begin
 end
 
 """
-    logpdf(d::fpdistribution, t::Real)
+    logpdf(d::fpdistribution, t)
 
 Returns the log probability density of `d` evaluated at `t`.
 """
@@ -72,14 +73,6 @@ Distributions.logpdf(d::fpdistribution, t::T) where T<:Real = begin
     log(pdf(d, t))
 end
 
-"""
-    logpdf(d::fpdistribution, t::Real)
-
-Returns the sum of the log probability densities of `d` evaluated at each value in `t`.
-"""
-Distributions.logpdf(d::fpdistribution, t::T) where T<:AbstractVector = begin
-    sum(log.(pdf(d, x) for x in t))
-end
 
 """
     logpdf(d::fpdistribution, t::Real)
@@ -149,6 +142,9 @@ distribution over transient states conditional on not yet being absorbed.
 """
 function quasistationary(d::fpdistribution)
     vals, vecs = eigen(d.T)
+    if length(findall(vals .== maximum(vals))) != 1
+        @warn "The largest eigenvalue was not unique. Quasi-stationary distribution might not make sense."
+    end
     idx = argmax(vals)
     vec = vecs[:,idx]
     return vec / sum(vec)

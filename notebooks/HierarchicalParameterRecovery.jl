@@ -11,12 +11,14 @@
 #+ echo=false
 using Distributions
 using Turing
-using Zygote
-Turing.setadbackend(:zygote)
+using Turing: Variational
+using ReverseDiff  # about 350s to fit
+#using Zygote  # about 330s
+Turing.setadbackend(:reversediff)
 using Plots, StatsPlots
-using Pkg
-Pkg.activate("../../FirstPassageTools.jl/")
 using FirstPassageTools
+import Base.exp
+ReverseDiff.@grad_from_chainrules exp(x::TrackedArray)
 
 #' ## Generating the true data
 #'
@@ -41,7 +43,7 @@ true_tau_i = exp.(rand(Normal(0, true_sd), nparticipants));
 #' each column is a data point.
 
 #+ echo=false
-ndata = 10
+ndata = 20
 data = zeros(nparticipants, ndata)
 param = true_tau .* true_tau_i
 for i = 1:nparticipants
@@ -61,12 +63,15 @@ end
     # Using the non-centered parameterization for τ
     τ ~ Normal()
     τ̂ = 1 + 0.1*τ  # Corresponds to Normal(1, 0.1)
-    sd ~ Exponential(0.25)
+    sd ~ Exponential()
+    #sd ~ Gamma(1.1, 0.25)
     τᵢ ~ filldist(Normal(), np)
     τ̂ᵢ = sd .* τᵢ  # Corresponds to MvNormal(0, sd)
     # Likelihood
     mult = exp.(τ̂ .+ τ̂ᵢ)
-    y ~ filldist(arraydist([fpdistribution(mult[p]*Tmat, mult[p]*Amat, p0vec) for p in 1:np]), nd)
+    #y ~ filldist(arraydist([fpdistribution(mult[p]*Tmat, mult[p]*Amat, p0vec) for p in 1:np]), nd)
+    y ~ filldist(product_distribution([fpdistribution(mult[p]*Tmat, mult[p]*Amat, p0vec) for p in 1:np]), nd)
+    #Turing.@addlogprob! sum(logpdf(fpdistribution(mult[p]*Tmat, mult[p]*Amat, p0vec), y[p,:]) for p in 1:np)
     return τ̂, τ̂ᵢ, mult
 end
 
@@ -115,7 +120,7 @@ end
 #' script with `julia -t 4 HierarchicalParameterRecovery.jl`.
 
 #posterior = sample(mod(data), NUTS(250, 0.65), MCMCThreads(), 1000, 4)
-posterior = sample(mod(data), NUTS(250, 0.7), 1000);
+posterior = sample(mod(data), NUTS(100, 0.65), 500);
 #posterior_centered = sample(mod_centered(data), NUTS(100, 0.65), 1000);
 #posterior_noncentered_tau = sample(mod_noncentered_tau(data), NUTS(100, 0.65), 1000);
 #posterior_noncentered_tau_i = sample(mod_noncentered_tau_i(data), NUTS(100, 0.65), 1000);
@@ -175,3 +180,49 @@ plot(plot_vec..., legend=false)
 #' If the posterior contains the true values of the parameters, we can say the parameters
 #' were recovered successfully.
 #'
+
+#' And now here is a quantile-quantile plot of the true vs. the fitted parameters. If all 
+#' the points lay on the diagonal, there would be perfect recovery of the parameters. If 
+#' there's not enough data, then the QQ-plot will show dots away from the diagnoal for 
+#' especially high and especially low true parameter values. This would be shrinkage back 
+#' to the prior.
+
+#+ echo=false; fig_cap="QQ-plot of the true vs. fitted individual parameter values"
+qqplot(param, mean(shrunken, dims=1)[:])
+xlabel!("True processing rate")
+ylabel!("Fitted processing rate")
+
+#' Now, to try out variational invference
+
+# Setting up ADVI
+advi = ADVI(10, 1000)
+
+# Setting up the variational approximation of the posterior
+# Took about 5min
+m = mod(data)
+q = vi(m, advi)
+
+# Sampling from the approximate posterior
+vipost = rand(q, 1000)
+
+vichain = Chains(vipost', posterior.name_map.parameters)
+
+vi_gen = generated_quantities(m, vichain)
+vi_gen = vcat(vi_gen...);
+vi_gen_tau = [x[1] for x in vi_gen];
+vi_gen_tau_i = transpose(hcat([x[2] for x in vi_gen]...));
+vi_shrunken = transpose(hcat([x[3] for x in vi_gen]...));
+
+histogram(exp.(vi_gen_tau), label="τ")
+vline!([true_tau])
+
+histogram(vipost[:,2], label="SD")
+vline!([true_sd])
+
+vi_plot_vec = [];
+for p = 1:nparticipants
+    plt = histogram(vi_shrunken[:,p], xticks=false, yticks=false)
+    plt = vline!(plt, [param[p]])
+    push!(vi_plot_vec, plt)
+end
+plot(vi_plot_vec..., legend=false)
