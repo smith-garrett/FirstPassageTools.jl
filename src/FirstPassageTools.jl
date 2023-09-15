@@ -6,7 +6,7 @@ export setup
 
 include("firstpassagedistributions.jl")
 export splittingprobabilities
-export fpdistribution
+export FPDistribution
 export @distr_support
 export minimum
 export maximum

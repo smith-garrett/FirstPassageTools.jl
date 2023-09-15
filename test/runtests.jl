@@ -33,18 +33,18 @@ end
     @test isapprox(3 * Wtest, rescale!(Wtest, 3))
 end
 
-@testset "Tests for building an fpdistribution" begin
+@testset "Tests for building an FPDistribution" begin
     # Should pass:
-    @test_nowarn fpdistribution(T, A, p0)
+    @test_nowarn FPDistribution(T, A, p0)
     
     # Should fail:
     Tbad = [-1 1.0; 1 -1]
     Abad = [0 1.1]
     p0bad = [1.0, 0.1]
-    @test_throws AssertionError fpdistribution(Tbad, A, p0)
-    @test_throws AssertionError fpdistribution(T, Abad, p0)
-    @test_throws AssertionError fpdistribution(T, A, p0bad)
-    @test_throws AssertionError fpdistribution(T, A, [1.0])
+    @test_throws AssertionError FPDistribution(Tbad, A, p0)
+    @test_throws AssertionError FPDistribution(T, Abad, p0)
+    @test_throws AssertionError FPDistribution(T, A, p0bad)
+    @test_throws AssertionError FPDistribution(T, A, [1.0])
 end
 
 @testset "Erlang distribution tests" begin
@@ -53,13 +53,13 @@ end
     erl = Erlang(2, 1/3)
     Terl, Aerl = setup("goodtest.csv")
     p0 = [1.0, 0]
-    fperl = fpdistribution(Terl, Aerl, p0)
+    fperl = FPDistribution(Terl, Aerl, p0)
     times = Array(0.0:5:20)
 
     @test all(isapprox.(pdf.(erl, times), pdf.(fperl, times)))
     @test all(isapprox.(logpdf.(erl, times), logpdf.(fperl, times)))
     @test all(isapprox.(cdf.(erl, times), cdf.(fperl, times)))
-    # Using a looser tolerance for this test because the quantile fn. for fpdistribution
+    # Using a looser tolerance for this test because the quantile fn. for FPDistribution
     # relies on numerical root finding
     qtiles = Array(0:0.1:0.9)
     @test all(isapprox.(quantile.(erl, qtiles), quantile.(fperl, qtiles), atol=1e-6))
@@ -69,7 +69,7 @@ end
 
 @testset "Multiple absorbing states" begin
     Tm, Am = setup("two_absorbing.csv")
-    two_abs = fpdistribution(Tm, Am, [1.0, 0, 0])
+    two_abs = FPDistribution(Tm, Am, [1.0, 0, 0])
     @test all(isapprox.([0.5, 0.5], splittingprobabilities(two_abs)))
     @test_nowarn pdf.(two_abs, [0.0, 5], 1)
     @test_nowarn pdf.(two_abs, [0.0, 5], [1, 2])
@@ -80,7 +80,7 @@ end
     T5050 = [-2.0 1; 1 -2]
     A5050 = [1.0 1.0]
     p5050 = [1.0, 0]  # irrelevant for quasi-stationary distribution, but needed to set up fp
-    qs_fp = fpdistribution(T5050, A5050, p5050)
+    qs_fp = FPDistribution(T5050, A5050, p5050)
     @test isapprox(quasistationary(qs_fp), [0.5, 0.5])
 end
 
@@ -88,15 +88,15 @@ end
     Ts = @SArray [-1 1.0; 1 -2]
     As = @SArray [0 1.0]
     p0s = @SVector [1.0, 0]
-    @test_nowarn fpdistribution(Ts, As, p0s)
-    @test isapprox(mean(fpdistribution(Ts, As, p0s)), mean(fpdistribution(T, A, p0)))
+    @test_nowarn FPDistribution(Ts, As, p0s)
+    @test isapprox(mean(FPDistribution(Ts, As, p0s)), mean(FPDistribution(T, A, p0)))
 end
 
 @testset "Difficult transition matrix" begin
     T = 6 * [-2.0 1 0 1 0; 1 -2 1 0 0; 0 1 -1 0 0; 1 0 0 -2 1; 0 0 0 1 -2]
     A = 6 * [0.0 0 0 0 1]
     p0 = [1.0, 0, 0, 0, 0]
-    @test pdf(fpdistribution(T, A, p0), eps()) > 0.0
+    @test pdf(FPDistribution(T, A, p0), eps()) > 0.0
 end
 
 
