@@ -2,7 +2,7 @@
 
 using LinearAlgebra
 using Distributions
-import Distributions: pdf, logpdf, cdf, minimum, maximum, mean, var, @distr_support
+import Distributions: pdf, logpdf, cdf, mean, var, @distr_support
 using Roots  # needed for numerically finding quantiles
 using ExponentialUtilities  # More numerically stable than built-in exp(::Matrix)
 
@@ -38,8 +38,6 @@ end
 
 # Helper functions
 Distributions.@distr_support FPDistribution 0 +Inf
-Distributions.minimum(d::FPDistribution) = 0.0
-Distributions.maximum(d::FPDistribution) = +Inf
 Distributions.mean(d::FPDistribution) = -sum(inv(d.T) * d.p0)
 Distributions.var(d::FPDistribution) = 2*sum(d.T^(-2) * d.p0) - mean(d)^2
 

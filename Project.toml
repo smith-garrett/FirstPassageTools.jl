@@ -1,7 +1,7 @@
 name = "FirstPassageTools"
 uuid = "accd898d-9985-405f-8366-b38793ff4f76"
 authors = ["Garrett Smith <gasmith@uni-potsdam.de> and contributors"]
-version = "0.2.0"
+version = "0.2.1"
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
